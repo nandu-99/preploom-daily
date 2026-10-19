@@ -11,3 +11,6 @@ coverage/
 .DS_Store
 *.log
 .vercel/
+
+20_DAY_IMPLEMENTATION_PLAN.md
+PROJECT_SCOPE.md
