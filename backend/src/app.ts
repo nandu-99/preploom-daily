@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import { env } from "./config/env.js";
+import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
 
 export const app = express();
 
@@ -22,11 +23,5 @@ app.get("/", (_request, response) => {
   });
 });
 
-app.use((_request, response) => {
-  response.status(404).json({
-    error: {
-      code: "NOT_FOUND",
-      message: "Route not found.",
-    },
-  });
-});
+app.use(notFoundHandler);
+app.use(errorHandler);
