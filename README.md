@@ -6,6 +6,7 @@ PrepLoom Daily is a full-stack technical interview preparation platform. The rep
 
 - Node.js 22
 - npm 10 or newer
+- PostgreSQL
 
 ## Workspace structure
 
@@ -27,6 +28,18 @@ Create local environment files:
 ```bash
 cp frontend/.env.example frontend/.env.local
 cp backend/.env.example backend/.env
+```
+
+Update `DATABASE_URL` in `backend/.env`, then generate the Prisma client:
+
+```bash
+npm run prisma:generate --workspace backend
+```
+
+When database models are added, create or apply migrations with:
+
+```bash
+npm run prisma:migrate --workspace backend
 ```
 
 Start both applications:

@@ -7,6 +7,16 @@ const environmentSchema = z.object({
     .default("development"),
   PORT: z.coerce.number().int().positive().max(65535).default(4000),
   FRONTEND_URL: z.url().default("http://localhost:3000"),
+  DATABASE_URL: z
+    .url()
+    .refine(
+      (value) =>
+        value.startsWith("postgresql://") || value.startsWith("postgres://"),
+      "DATABASE_URL must use the PostgreSQL protocol.",
+    )
+    .default(
+      "postgresql://postgres:postgres@localhost:5432/preploom?schema=public",
+    ),
 });
 
 const result = environmentSchema.safeParse(process.env);
