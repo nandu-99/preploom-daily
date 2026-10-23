@@ -42,6 +42,13 @@ When database models are added, create or apply migrations with:
 npm run prisma:migrate --workspace backend
 ```
 
+Create or update the initial admin account using the credentials in
+`backend/.env`:
+
+```bash
+npm run prisma:seed --workspace backend
+```
+
 Start both applications:
 
 ```bash

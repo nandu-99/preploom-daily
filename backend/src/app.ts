@@ -3,6 +3,7 @@ import express from "express";
 import helmet from "helmet";
 import { env } from "./config/env.js";
 import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
+import { adminAuthRouter } from "./routes/admin-auth.js";
 
 export const app = express();
 
@@ -22,6 +23,8 @@ app.get("/", (_request, response) => {
     status: "running",
   });
 });
+
+app.use("/admin", adminAuthRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

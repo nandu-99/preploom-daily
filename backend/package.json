@@ -10,19 +10,22 @@
     "start": "node dist/server.js",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/*.test.ts",
+    "test": "JWT_SECRET=test-secret-with-at-least-thirty-two-characters tsx --test tests/*.test.ts",
     "prisma:generate": "prisma generate --config prisma7.config.ts",
     "prisma:migrate": "prisma migrate dev --config prisma7.config.ts",
     "prisma:deploy": "prisma migrate deploy --config prisma7.config.ts",
-    "prisma:studio": "prisma studio --config prisma7.config.ts"
+    "prisma:studio": "prisma studio --config prisma7.config.ts",
+    "prisma:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",
     "@prisma/client": "^7.10.1",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.1",
     "zod": "^4.1.12"
   },
@@ -30,6 +33,7 @@
     "@eslint/js": "^9.39.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.19.24",
     "@types/pg": "^8.23.1",
     "eslint": "^9.39.1",

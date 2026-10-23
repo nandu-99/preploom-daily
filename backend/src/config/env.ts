@@ -17,6 +17,8 @@ const environmentSchema = z.object({
     .default(
       "postgresql://postgres:postgres@localhost:5432/preploom?schema=public",
     ),
+  JWT_SECRET: z.string().min(32),
+  JWT_EXPIRES_IN_SECONDS: z.coerce.number().int().positive().default(3600),
 });
 
 const result = environmentSchema.safeParse(process.env);
