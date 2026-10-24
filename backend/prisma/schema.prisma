@@ -18,3 +18,14 @@ model Admin {
 
   @@map("admins")
 }
+
+model Subject {
+  id          String   @id @default(cuid())
+  name        String   @db.VarChar(120)
+  slug        String   @unique @db.VarChar(120)
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("subjects")
+}

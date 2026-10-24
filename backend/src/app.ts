@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { env } from "./config/env.js";
 import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
 import { adminAuthRouter } from "./routes/admin-auth.js";
+import { subjectsRouter } from "./routes/subjects.js";
 
 export const app = express();
 
@@ -25,6 +26,7 @@ app.get("/", (_request, response) => {
 });
 
 app.use("/admin", adminAuthRouter);
+app.use("/subjects", subjectsRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
