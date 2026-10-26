@@ -73,5 +73,3 @@ npm run typecheck
 npm test
 npm run build
 ```
-
-See [PROJECT_SCOPE.md](PROJECT_SCOPE.md) and [20_DAY_IMPLEMENTATION_PLAN.md](20_DAY_IMPLEMENTATION_PLAN.md) for the approved scope and delivery sequence.
