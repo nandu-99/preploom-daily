@@ -128,6 +128,18 @@ subjectsRouter.delete(
       throw new AppError("Subject not found.", 404, "SUBJECT_NOT_FOUND");
     }
 
+    const topicCount = await prisma.topic.count({
+      where: { subjectId: subject.id },
+    });
+
+    if (topicCount > 0) {
+      throw new AppError(
+        "Delete this subject's topics before deleting the subject.",
+        409,
+        "SUBJECT_HAS_TOPICS",
+      );
+    }
+
     await prisma.subject.delete({ where: { id: subject.id } });
     response.status(204).end();
   },

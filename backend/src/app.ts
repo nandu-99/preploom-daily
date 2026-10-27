@@ -5,6 +5,7 @@ import { env } from "./config/env.js";
 import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
 import { adminAuthRouter } from "./routes/admin-auth.js";
 import { subjectsRouter } from "./routes/subjects.js";
+import { topicsRouter } from "./routes/topics.js";
 
 export const app = express();
 
@@ -26,6 +27,7 @@ app.get("/", (_request, response) => {
 });
 
 app.use("/admin", adminAuthRouter);
+app.use("/subjects/:subjectSlug/topics", topicsRouter);
 app.use("/subjects", subjectsRouter);
 
 app.use(notFoundHandler);

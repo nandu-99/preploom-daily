@@ -49,6 +49,10 @@ Create or update the initial admin account using the credentials in
 npm run prisma:seed --workspace backend
 ```
 
+Topics can be read at `/subjects/:subjectSlug/topics` and
+`/subjects/:subjectSlug/topics/:topicSlug`. Admins can create topics with
+`POST /subjects/:subjectSlug/topics` and edit or delete them by topic ID.
+
 Start both applications:
 
 ```bash
