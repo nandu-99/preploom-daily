@@ -140,6 +140,18 @@ subjectsRouter.delete(
       );
     }
 
+    const questionCount = await prisma.question.count({
+      where: { subjectId: subject.id },
+    });
+
+    if (questionCount > 0) {
+      throw new AppError(
+        "Delete this subject's questions before deleting the subject.",
+        409,
+        "SUBJECT_HAS_QUESTIONS",
+      );
+    }
+
     await prisma.subject.delete({ where: { id: subject.id } });
     response.status(204).end();
   },

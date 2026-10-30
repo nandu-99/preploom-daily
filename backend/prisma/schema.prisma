@@ -25,6 +25,7 @@ model Subject {
   slug        String   @unique @db.VarChar(120)
   description String?  @db.Text
   topics      Topic[]
+  questions   Question[]
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -46,4 +47,20 @@ model Topic {
   @@unique([subjectId, slug])
   @@index([subjectId, position])
   @@map("topics")
+}
+
+model Question {
+  id        String   @id @default(cuid())
+  subjectId String   @map("subject_id")
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Restrict)
+  prompt    String   @db.Text
+  slug      String   @db.VarChar(160)
+  answer    String   @db.Text
+  position  Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([subjectId, slug])
+  @@index([subjectId, position])
+  @@map("questions")
 }

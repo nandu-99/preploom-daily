@@ -53,6 +53,11 @@ Topics can be read at `/subjects/:subjectSlug/topics` and
 `/subjects/:subjectSlug/topics/:topicSlug`. Admins can create topics with
 `POST /subjects/:subjectSlug/topics` and edit or delete them by topic ID.
 
+Interview questions can be read at `/subjects/:subjectSlug/questions` and
+`/subjects/:subjectSlug/questions/:questionSlug`. Admins can create questions
+with `POST /subjects/:subjectSlug/questions` and edit or delete them by question
+ID. Each question has a prompt, answer, slug, and display position.
+
 Start both applications:
 
 ```bash
