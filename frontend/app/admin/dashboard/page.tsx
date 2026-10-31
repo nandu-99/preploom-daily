@@ -387,12 +387,18 @@ export default function AdminDashboardPage() {
                           </p>
                         ) : null}
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
                         <Link
                           href={`/admin/dashboard/subjects/${subject.slug}/topics`}
                           className="inline-flex h-9 items-center rounded-[9px] border border-black/[0.1] px-3 text-[12px] font-medium text-[#555] transition-colors hover:border-black/25 hover:text-[#151515] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border-white/[0.11] dark:text-[#b3b3b3] dark:hover:border-white/25 dark:hover:text-white dark:focus-visible:ring-white/50"
                         >
                           Manage topics
+                        </Link>
+                        <Link
+                          href={`/admin/dashboard/subjects/${subject.slug}/questions`}
+                          className="inline-flex h-9 items-center rounded-[9px] border border-black/[0.1] px-3 text-[12px] font-medium text-[#555] transition-colors hover:border-black/25 hover:text-[#151515] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border-white/[0.11] dark:text-[#b3b3b3] dark:hover:border-white/25 dark:hover:text-white dark:focus-visible:ring-white/50"
+                        >
+                          Manage questions
                         </Link>
                         <button
                           type="button"
