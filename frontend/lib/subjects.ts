@@ -15,6 +15,15 @@ export type TopicSummary = {
 
 export type Topic = TopicSummary & { content: string };
 
+export type QuestionSummary = {
+  id: string;
+  prompt: string;
+  slug: string;
+  position: number;
+};
+
+export type Question = QuestionSummary & { answer: string };
+
 const backendUrl =
   process.env.BACKEND_URL ??
   process.env.NEXT_PUBLIC_BACKEND_URL ??
@@ -98,5 +107,48 @@ export async function getTopic(
       : { topic: null, unavailable: true };
   } catch {
     return { topic: null, unavailable: true };
+  }
+}
+
+export async function getQuestions(
+  slug: string,
+): Promise<QuestionSummary[] | null> {
+  try {
+    const response = await fetch(
+      `${backendUrl}/subjects/${encodeURIComponent(slug)}/questions`,
+      { cache: "no-store" },
+    );
+    if (!response.ok) return null;
+
+    const body = (await response.json()) as {
+      data?: { questions?: QuestionSummary[] };
+    };
+    return Array.isArray(body.data?.questions) ? body.data.questions : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function getQuestion(
+  subjectSlug: string,
+  questionSlug: string,
+): Promise<{ question: Question | null; unavailable: boolean }> {
+  try {
+    const response = await fetch(
+      `${backendUrl}/subjects/${encodeURIComponent(subjectSlug)}/questions/${encodeURIComponent(questionSlug)}`,
+      { cache: "no-store" },
+    );
+
+    if (response.status === 404) {
+      return { question: null, unavailable: false };
+    }
+    if (!response.ok) return { question: null, unavailable: true };
+
+    const body = (await response.json()) as { data?: { question?: Question } };
+    return body.data?.question
+      ? { question: body.data.question, unavailable: false }
+      : { question: null, unavailable: true };
+  } catch {
+    return { question: null, unavailable: true };
   }
 }
