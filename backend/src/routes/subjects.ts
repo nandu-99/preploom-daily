@@ -152,6 +152,18 @@ subjectsRouter.delete(
       );
     }
 
+    const roadmapCount = await prisma.roadmap.count({
+      where: { subjectId: subject.id },
+    });
+
+    if (roadmapCount > 0) {
+      throw new AppError(
+        "Delete this subject's roadmaps before deleting the subject.",
+        409,
+        "SUBJECT_HAS_ROADMAPS",
+      );
+    }
+
     await prisma.subject.delete({ where: { id: subject.id } });
     response.status(204).end();
   },

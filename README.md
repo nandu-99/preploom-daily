@@ -58,6 +58,13 @@ Interview questions can be read at `/subjects/:subjectSlug/questions` and
 with `POST /subjects/:subjectSlug/questions` and edit or delete them by question
 ID. Each question has a prompt, answer, slug, and display position.
 
+Roadmaps can be read at `/subjects/:subjectSlug/roadmaps` and
+`/subjects/:subjectSlug/roadmaps/:roadmapSlug`. Admins can create roadmaps with
+`POST /subjects/:subjectSlug/roadmaps` and edit or delete them by roadmap ID.
+Each roadmap has a title, slug, optional summary, display position, and an
+ordered `steps` array. Each step has a `title` and `description`. The order of
+the array is the order shown to learners.
+
 Start both applications:
 
 ```bash
