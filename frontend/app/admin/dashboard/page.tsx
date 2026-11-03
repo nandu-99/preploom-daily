@@ -400,6 +400,12 @@ export default function AdminDashboardPage() {
                         >
                           Manage questions
                         </Link>
+                        <Link
+                          href={`/admin/dashboard/subjects/${subject.slug}/roadmaps`}
+                          className="inline-flex h-9 items-center rounded-[9px] border border-black/[0.1] px-3 text-[12px] font-medium text-[#555] transition-colors hover:border-black/25 hover:text-[#151515] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border-white/[0.11] dark:text-[#b3b3b3] dark:hover:border-white/25 dark:hover:text-white dark:focus-visible:ring-white/50"
+                        >
+                          Manage roadmaps
+                        </Link>
                         <button
                           type="button"
                           onClick={() => editSubject(subject)}
