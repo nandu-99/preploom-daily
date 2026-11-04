@@ -24,6 +24,18 @@ export type QuestionSummary = {
 
 export type Question = QuestionSummary & { answer: string };
 
+export type RoadmapSummary = {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string | null;
+  position: number;
+};
+
+export type Roadmap = RoadmapSummary & {
+  steps: { title: string; description: string }[];
+};
+
 const backendUrl =
   process.env.BACKEND_URL ??
   process.env.NEXT_PUBLIC_BACKEND_URL ??
@@ -150,5 +162,48 @@ export async function getQuestion(
       : { question: null, unavailable: true };
   } catch {
     return { question: null, unavailable: true };
+  }
+}
+
+export async function getRoadmaps(
+  slug: string,
+): Promise<RoadmapSummary[] | null> {
+  try {
+    const response = await fetch(
+      `${backendUrl}/subjects/${encodeURIComponent(slug)}/roadmaps`,
+      { cache: "no-store" },
+    );
+    if (!response.ok) return null;
+
+    const body = (await response.json()) as {
+      data?: { roadmaps?: RoadmapSummary[] };
+    };
+    return Array.isArray(body.data?.roadmaps) ? body.data.roadmaps : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function getRoadmap(
+  subjectSlug: string,
+  roadmapSlug: string,
+): Promise<{ roadmap: Roadmap | null; unavailable: boolean }> {
+  try {
+    const response = await fetch(
+      `${backendUrl}/subjects/${encodeURIComponent(subjectSlug)}/roadmaps/${encodeURIComponent(roadmapSlug)}`,
+      { cache: "no-store" },
+    );
+
+    if (response.status === 404) {
+      return { roadmap: null, unavailable: false };
+    }
+    if (!response.ok) return { roadmap: null, unavailable: true };
+
+    const body = (await response.json()) as { data?: { roadmap?: Roadmap } };
+    return body.data?.roadmap
+      ? { roadmap: body.data.roadmap, unavailable: false }
+      : { roadmap: null, unavailable: true };
+  } catch {
+    return { roadmap: null, unavailable: true };
   }
 }
