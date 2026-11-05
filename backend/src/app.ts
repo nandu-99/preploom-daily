@@ -5,6 +5,7 @@ import { env } from "./config/env.js";
 import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
 import { adminAuthRouter } from "./routes/admin-auth.js";
 import { questionsRouter } from "./routes/questions.js";
+import { quizzesRouter } from "./routes/quizzes.js";
 import { roadmapsRouter } from "./routes/roadmaps.js";
 import { subjectsRouter } from "./routes/subjects.js";
 import { topicsRouter } from "./routes/topics.js";
@@ -30,6 +31,7 @@ app.get("/", (_request, response) => {
 
 app.use("/admin", adminAuthRouter);
 app.use("/subjects/:subjectSlug/questions", questionsRouter);
+app.use("/subjects/:subjectSlug/quizzes", quizzesRouter);
 app.use("/subjects/:subjectSlug/roadmaps", roadmapsRouter);
 app.use("/subjects/:subjectSlug/topics", topicsRouter);
 app.use("/subjects", subjectsRouter);

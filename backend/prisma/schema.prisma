@@ -27,6 +27,7 @@ model Subject {
   topics      Topic[]
   questions   Question[]
   roadmaps    Roadmap[]
+  quizzes     Quiz[]
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -81,4 +82,37 @@ model Roadmap {
   @@unique([subjectId, slug])
   @@index([subjectId, position])
   @@map("roadmaps")
+}
+
+model Quiz {
+  id        String         @id @default(cuid())
+  subjectId String         @map("subject_id")
+  subject   Subject        @relation(fields: [subjectId], references: [id], onDelete: Restrict)
+  title     String         @db.VarChar(160)
+  slug      String         @db.VarChar(160)
+  summary   String?        @db.Text
+  position  Int            @default(0)
+  questions QuizQuestion[]
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
+
+  @@unique([subjectId, slug])
+  @@index([subjectId, position])
+  @@map("quizzes")
+}
+
+model QuizQuestion {
+  id            String   @id @default(cuid())
+  quizId        String   @map("quiz_id")
+  quiz          Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  prompt        String   @db.Text
+  options       Json
+  correctOption Int      @map("correct_option")
+  explanation   String?  @db.Text
+  position      Int      @default(0)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@index([quizId, position])
+  @@map("quiz_questions")
 }

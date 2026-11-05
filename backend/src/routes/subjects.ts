@@ -164,6 +164,18 @@ subjectsRouter.delete(
       );
     }
 
+    const quizCount = await prisma.quiz.count({
+      where: { subjectId: subject.id },
+    });
+
+    if (quizCount > 0) {
+      throw new AppError(
+        "Delete this subject's quizzes before deleting the subject.",
+        409,
+        "SUBJECT_HAS_QUIZZES",
+      );
+    }
+
     await prisma.subject.delete({ where: { id: subject.id } });
     response.status(204).end();
   },
