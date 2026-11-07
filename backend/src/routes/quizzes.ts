@@ -46,6 +46,14 @@ const quizSlugParamsSchema = subjectParamsSchema.extend({
 const quizIdParamsSchema = subjectParamsSchema.extend({
   id: z.string().min(1),
 });
+const submitQuizSchema = z.object({
+  answers: z.array(
+    z.object({
+      questionId: z.string().min(1),
+      optionIndex: z.number().int().min(0),
+    }),
+  ),
+});
 
 export const quizzesRouter = Router({ mergeParams: true });
 
@@ -135,6 +143,74 @@ quizzesRouter.get(
     }
 
     response.status(200).json({ data: { quiz } });
+  },
+);
+
+quizzesRouter.post(
+  "/:quizSlug/submit",
+  validateRequest({ params: quizSlugParamsSchema, body: submitQuizSchema }),
+  async (request, response) => {
+    const subject = await prisma.subject.findUnique({
+      where: { slug: request.params.subjectSlug as string },
+    });
+    if (!subject) {
+      throw new AppError("Subject not found.", 404, "SUBJECT_NOT_FOUND");
+    }
+
+    const quiz = await prisma.quiz.findUnique({
+      where: {
+        subjectId_slug: {
+          subjectId: subject.id,
+          slug: request.params.quizSlug as string,
+        },
+      },
+      include: { questions: { orderBy: { position: "asc" } } },
+    });
+    if (!quiz) {
+      throw new AppError("Quiz not found.", 404, "QUIZ_NOT_FOUND");
+    }
+
+    const { answers } = request.body as z.infer<typeof submitQuizSchema>;
+    const selected = new Map(
+      answers.map((answer) => [answer.questionId, answer.optionIndex]),
+    );
+    if (
+      answers.length !== quiz.questions.length ||
+      selected.size !== quiz.questions.length ||
+      quiz.questions.some((question) => {
+        const optionIndex = selected.get(question.id);
+        return (
+          optionIndex === undefined ||
+          !Array.isArray(question.options) ||
+          optionIndex >= question.options.length
+        );
+      })
+    ) {
+      throw new AppError(
+        "Submit one valid answer for every question.",
+        400,
+        "INVALID_QUIZ_ANSWERS",
+      );
+    }
+
+    const results = quiz.questions.map((question) => {
+      const selectedOption = selected.get(question.id)!;
+      return {
+        questionId: question.id,
+        selectedOption,
+        correctOption: question.correctOption,
+        correct: selectedOption === question.correctOption,
+        explanation: question.explanation,
+      };
+    });
+
+    response.status(200).json({
+      data: {
+        score: results.filter((result) => result.correct).length,
+        total: results.length,
+        results,
+      },
+    });
   },
 );
 
