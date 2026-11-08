@@ -36,6 +36,24 @@ export type Roadmap = RoadmapSummary & {
   steps: { title: string; description: string }[];
 };
 
+export type QuizSummary = {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string | null;
+  position: number;
+  _count: { questions: number };
+};
+
+export type Quiz = Omit<QuizSummary, "_count"> & {
+  questions: {
+    id: string;
+    prompt: string;
+    options: string[];
+    position: number;
+  }[];
+};
+
 const backendUrl =
   process.env.BACKEND_URL ??
   process.env.NEXT_PUBLIC_BACKEND_URL ??
@@ -205,5 +223,43 @@ export async function getRoadmap(
       : { roadmap: null, unavailable: true };
   } catch {
     return { roadmap: null, unavailable: true };
+  }
+}
+
+export async function getQuizzes(slug: string): Promise<QuizSummary[] | null> {
+  try {
+    const response = await fetch(
+      `${backendUrl}/subjects/${encodeURIComponent(slug)}/quizzes`,
+      { cache: "no-store" },
+    );
+    if (!response.ok) return null;
+
+    const body = (await response.json()) as {
+      data?: { quizzes?: QuizSummary[] };
+    };
+    return Array.isArray(body.data?.quizzes) ? body.data.quizzes : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function getQuiz(
+  subjectSlug: string,
+  quizSlug: string,
+): Promise<{ quiz: Quiz | null; unavailable: boolean }> {
+  try {
+    const response = await fetch(
+      `${backendUrl}/subjects/${encodeURIComponent(subjectSlug)}/quizzes/${encodeURIComponent(quizSlug)}`,
+      { cache: "no-store" },
+    );
+    if (response.status === 404) return { quiz: null, unavailable: false };
+    if (!response.ok) return { quiz: null, unavailable: true };
+
+    const body = (await response.json()) as { data?: { quiz?: Quiz } };
+    return body.data?.quiz
+      ? { quiz: body.data.quiz, unavailable: false }
+      : { quiz: null, unavailable: true };
+  } catch {
+    return { quiz: null, unavailable: true };
   }
 }
