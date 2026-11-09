@@ -99,7 +99,10 @@ export default async function SubjectPage({ params }: SubjectPageProps) {
       </section>
 
       {subject ? (
-        <section className="px-5 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+        <section
+          id="topics"
+          className="px-5 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32"
+        >
           <div className="mx-auto grid max-w-[1240px] gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
             <div className="max-w-md">
               <h2 className="text-balance text-[clamp(2rem,3.4vw,3.4rem)] font-semibold leading-[0.98] tracking-[-0.052em]">
@@ -179,7 +182,10 @@ export default async function SubjectPage({ params }: SubjectPageProps) {
       ) : null}
 
       {subject ? (
-        <section className="border-t border-black/[0.08] px-5 py-20 dark:border-white/[0.09] sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+        <section
+          id="questions"
+          className="border-t border-black/[0.08] px-5 py-20 dark:border-white/[0.09] sm:px-6 sm:py-24 lg:px-8 lg:py-32"
+        >
           <div className="mx-auto grid max-w-[1240px] gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
             <div className="max-w-md">
               <h2 className="text-balance text-[clamp(2rem,3.4vw,3.4rem)] font-semibold leading-[0.98] tracking-[-0.052em]">
@@ -253,7 +259,10 @@ export default async function SubjectPage({ params }: SubjectPageProps) {
       ) : null}
 
       {subject ? (
-        <section className="border-t border-black/[0.08] px-5 py-20 dark:border-white/[0.09] sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+        <section
+          id="roadmaps"
+          className="border-t border-black/[0.08] px-5 py-20 dark:border-white/[0.09] sm:px-6 sm:py-24 lg:px-8 lg:py-32"
+        >
           <div className="mx-auto grid max-w-[1240px] gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
             <div className="max-w-md">
               <h2 className="text-balance text-[clamp(2rem,3.4vw,3.4rem)] font-semibold leading-[0.98] tracking-[-0.052em]">
@@ -333,7 +342,10 @@ export default async function SubjectPage({ params }: SubjectPageProps) {
         </section>
       ) : null}
       {subject ? (
-        <section className="border-t border-black/[0.08] px-5 py-20 dark:border-white/[0.09] sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+        <section
+          id="quizzes"
+          className="border-t border-black/[0.08] px-5 py-20 dark:border-white/[0.09] sm:px-6 sm:py-24 lg:px-8 lg:py-32"
+        >
           <div className="mx-auto grid max-w-[1240px] gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
             <div className="max-w-md">
               <h2 className="text-balance text-[clamp(2rem,3.4vw,3.4rem)] font-semibold leading-[0.98] tracking-[-0.052em]">

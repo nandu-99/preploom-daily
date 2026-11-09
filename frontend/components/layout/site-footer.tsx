@@ -7,18 +7,14 @@ const groups = [
     title: "Prepare",
     links: [
       ["Subjects", "/subjects"],
-      ["Roadmaps", "/roadmaps"],
-      ["DSA", "/dsa"],
-      ["WebDev", "/webdev"],
-      ["Interview Questions", "/interview-questions"],
+      ["Home", "/"],
     ],
   },
   {
     title: "Product",
     links: [
       ["About", "/about"],
-      ["Feedback", "/feedback"],
-      ["Contact", "/contact"],
+      ["Admin", "/admin"],
     ],
   },
 ];

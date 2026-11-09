@@ -1,8 +1,7 @@
 import {
   ArrowRight,
   BookOpen,
-  Braces,
-  Code2,
+  CircleHelp,
   Cpu,
   Database,
   MessageSquareText,
@@ -60,13 +59,14 @@ function Tile({
   );
 }
 
-export function ProductMap() {
+export function ProductMap({ subjectSlug }: { subjectSlug?: string }) {
+  const subjectHref = subjectSlug ? `/subjects/${subjectSlug}` : "/subjects";
   return (
     <div className="grid gap-3 md:grid-cols-12 md:auto-rows-[166px] lg:auto-rows-[176px]">
       <Tile
         href="/subjects"
         title="Subjects"
-        description="Learn Operating Systems, DBMS, networks, OOP, and other core interview subjects."
+        description="Explore subjects and their notes, roadmaps, questions, and quizzes."
         icon={BookOpen}
         className="md:col-span-7 md:row-span-2"
         contentClassName="sm:max-w-[54%]"
@@ -89,31 +89,31 @@ export function ProductMap() {
         </div>
       </Tile>
       <Tile
-        href="/roadmaps"
+        href={`${subjectHref}#roadmaps`}
         title="Roadmaps"
         description="Follow a clear path for the role or goal you are preparing for."
         icon={Route}
         className="md:col-span-5"
       />
       <Tile
-        href="/interview-questions"
+        href={`${subjectHref}#questions`}
         title="Interview questions"
         description="Practise behavioral and technical questions with concise answers and recall mode."
         icon={MessageSquareText}
         className="md:col-span-5"
       />
       <Tile
-        href="/dsa"
-        title="Trusted DSA sheets"
-        description="Choose a proven sheet. Questions and progress stay on the original platform."
-        icon={Braces}
+        href={`${subjectHref}#quizzes`}
+        title="Quizzes"
+        description="Choose answers, submit a quiz, and review your result."
+        icon={CircleHelp}
         className="md:col-span-5"
       />
       <Tile
-        href="/webdev"
-        title="WebDev resources"
-        description="Useful websites, project ideas, components, setup guides, and Skills.md."
-        icon={Code2}
+        href={`${subjectHref}#topics`}
+        title="Topic notes"
+        description="Read focused notes added through the admin portal."
+        icon={BookOpen}
         className="md:col-span-7"
       />
     </div>

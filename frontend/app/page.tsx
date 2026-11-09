@@ -4,6 +4,7 @@ import { TopicFocusIllustration } from "@/components/home/topic-focus-illustrati
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { GridPattern } from "@/components/ui/grid-pattern";
+import { getSubjects, getTopics } from "@/lib/subjects";
 import { ArrowRight, Check, Command } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -12,33 +13,28 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "PrepLoom",
   description:
-    "Master core concepts with structured notes, curated roadmaps, quizzes, interview questions, and trusted resources.",
+    "Master core concepts with structured notes, roadmaps, quizzes, and interview questions.",
 };
 
-const popularTopics = [
-  [
-    "Deadlocks",
-    "/subjects/operating-systems?topic=deadlock-fundamentals#reading-preview-note",
-  ],
-  ["Polymorphism", "/subjects/oop?topic=polymorphism#reading-preview-note"],
-  [
-    "Normalization",
-    "/subjects/dbms?topic=normalization-and-anomalies#reading-preview-note",
-  ],
-  [
-    "TCP/IP Models",
-    "/subjects/computer-networks?topic=osi-and-tcp-ip-models#reading-preview-note",
-  ],
-];
+export const dynamic = "force-dynamic";
 
-const subjects = [
-  ["Operating Systems", "Processes, memory, scheduling"],
-  ["Database Systems", "Transactions, SQL, indexing"],
-  ["Computer Networks", "Protocols, layers, the web"],
-  ["Object-Oriented Design", "Principles, patterns, trade-offs"],
-];
-
-export default function HomePage() {
+export default async function HomePage() {
+  const subjects = await getSubjects();
+  const featuredSubjects = subjects?.slice(0, 4) ?? [];
+  const topicLists = await Promise.all(
+    featuredSubjects.map((subject) => getTopics(subject.slug)),
+  );
+  const featuredTopics = topicLists.flatMap((topics, index) =>
+    topics?.[0]
+      ? [
+          {
+            label: topics[0].title,
+            href: `/subjects/${featuredSubjects[index].slug}/topics/${topics[0].slug}`,
+          },
+        ]
+      : [],
+  );
+  const firstSubject = featuredSubjects[0];
   return (
     <div className="min-h-[100dvh] bg-[#f7f7f5] font-[family-name:var(--font-geist-sans)] text-[#151515] selection:bg-black selection:text-white dark:bg-[#0a0a0a] dark:text-[#f3f3f1] dark:selection:bg-white dark:selection:text-black">
       <a
@@ -79,12 +75,11 @@ export default function HomePage() {
               <p className="mt-4 max-w-[620px] text-pretty text-[15px] leading-6 text-[#555] dark:text-[#b3b3b3] sm:mt-6 sm:text-[17px] sm:leading-8">
                 <span className="sm:hidden">
                   Study core concepts with notes, roadmaps, quizzes, interview
-                  questions, and trusted resources.
+                  questions.
                 </span>
                 <span className="hidden sm:inline">
                   Master core concepts with structured notes, curated roadmaps,
-                  quizzes, interview questions, and trusted resources, all in
-                  one place.
+                  quizzes, and interview questions, all in one place.
                 </span>
               </p>
               <div className="mt-6 max-w-[650px] sm:mt-8">
@@ -99,29 +94,35 @@ export default function HomePage() {
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </Link>
                 <Link
-                  href="/roadmaps"
+                  href={
+                    firstSubject
+                      ? `/subjects/${firstSubject.slug}#roadmaps`
+                      : "/subjects"
+                  }
                   className="inline-flex h-10 items-center justify-center rounded-[10px] px-2 text-[13px] font-medium text-[#606060] hover:bg-black/[0.04] dark:text-[#a8a8a8] dark:hover:bg-white/[0.06] sm:px-4 sm:text-sm"
                 >
                   <span className="sm:hidden">Roadmaps</span>
                   <span className="hidden sm:inline">Explore roadmaps</span>
                 </Link>
               </div>
-              <div className="-mx-5 mt-5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-7 sm:overflow-visible sm:px-0 sm:pb-0">
-                <div className="flex w-max items-center gap-2 text-xs text-[#606060] sm:w-auto sm:flex-wrap sm:text-[13px]">
-                  <span className="mr-1 shrink-0 font-medium text-[#151515] dark:text-[#f3f3f1]">
-                    Popular
-                  </span>
-                  {popularTopics.map(([label, href], index) => (
-                    <Link
-                      key={label}
-                      href={href}
-                      className={`${index === 3 ? "hidden sm:inline-flex" : "shrink-0"} rounded-full border border-black/[0.11] bg-black/[0.02] px-3 py-1.5 hover:border-black/25 dark:border-white/[0.12] dark:bg-white/[0.035]`}
-                    >
-                      {label}
-                    </Link>
-                  ))}
+              {featuredTopics.length > 0 ? (
+                <div className="-mx-5 mt-5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-7 sm:overflow-visible sm:px-0 sm:pb-0">
+                  <div className="flex w-max items-center gap-2 text-xs text-[#606060] sm:w-auto sm:flex-wrap sm:text-[13px]">
+                    <span className="mr-1 shrink-0 font-medium text-[#151515] dark:text-[#f3f3f1]">
+                      Start here
+                    </span>
+                    {featuredTopics.map(({ label, href }, index) => (
+                      <Link
+                        key={label}
+                        href={href}
+                        className={`${index === 3 ? "hidden sm:inline-flex" : "shrink-0"} rounded-full border border-black/[0.11] bg-black/[0.02] px-3 py-1.5 hover:border-black/25 dark:border-white/[0.12] dark:bg-white/[0.035]`}
+                      >
+                        {label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
             <figure
               className="relative mx-auto hidden w-full max-w-[640px] origin-center scale-[1.16] items-center justify-center lg:flex xl:scale-[1.25]"
@@ -163,25 +164,41 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="border-t border-black/[0.12] dark:border-white/[0.13]">
-              {subjects.map(([title, description], index) => (
-                <div
-                  key={title}
-                  className="grid grid-cols-[38px_1fr_auto] items-center gap-4 border-b border-black/[0.09] py-6 dark:border-white/[0.1] sm:grid-cols-[54px_1fr_auto] sm:py-7"
+              {subjects === null ? (
+                <p
+                  role="alert"
+                  className="py-8 text-[14px] text-[#606060] dark:text-[#a8a8a8]"
                 >
-                  <span className="text-[12px] text-[#777] dark:text-[#858585]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3 className="text-[18px] font-medium tracking-[-0.025em] sm:text-[21px]">
-                      {title}
-                    </h3>
-                    <p className="mt-1 text-[12px] text-[#606060] dark:text-[#a8a8a8] sm:text-[13px]">
-                      {description}
-                    </p>
-                  </div>
-                  <Check className="size-4 text-[#777]" aria-hidden="true" />
-                </div>
-              ))}
+                  Subjects are unavailable right now.
+                </p>
+              ) : featuredSubjects.length === 0 ? (
+                <p className="py-8 text-[14px] text-[#606060] dark:text-[#a8a8a8]">
+                  Subjects will appear here after they are added through the
+                  admin portal.
+                </p>
+              ) : (
+                featuredSubjects.map((subject, index) => (
+                  <Link
+                    key={subject.id}
+                    href={`/subjects/${subject.slug}`}
+                    className="grid grid-cols-[38px_1fr_auto] items-center gap-4 border-b border-black/[0.09] py-6 dark:border-white/[0.1] sm:grid-cols-[54px_1fr_auto] sm:py-7"
+                  >
+                    <span className="text-[12px] text-[#777] dark:text-[#858585]">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h3 className="text-[18px] font-medium tracking-[-0.025em] sm:text-[21px]">
+                        {subject.name}
+                      </h3>
+                      <p className="mt-1 text-[12px] text-[#606060] dark:text-[#a8a8a8] sm:text-[13px]">
+                        {subject.description ??
+                          "Explore notes and practice resources"}
+                      </p>
+                    </div>
+                    <Check className="size-4 text-[#777]" aria-hidden="true" />
+                  </Link>
+                ))
+              )}
             </div>
           </div>
         </section>
@@ -198,7 +215,7 @@ export default function HomePage() {
               </p>
             </div>
             <div className="mt-6">
-              <ProductMap />
+              <ProductMap subjectSlug={firstSubject?.slug} />
             </div>
           </div>
         </section>
@@ -219,10 +236,16 @@ export default function HomePage() {
                   your interview is close.
                 </p>
                 <Link
-                  href="/subjects/operating-systems"
+                  href={
+                    firstSubject
+                      ? `/subjects/${firstSubject.slug}`
+                      : "/subjects"
+                  }
                   className="mt-8 inline-flex h-12 items-center gap-2 rounded-[10px] bg-[#151515] px-5 text-[14px] font-medium text-white dark:border dark:border-white/[0.14] dark:bg-[#242424]"
                 >
-                  Open Operating Systems{" "}
+                  {firstSubject
+                    ? `Open ${firstSubject.name}`
+                    : "Explore subjects"}{" "}
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </Link>
               </div>

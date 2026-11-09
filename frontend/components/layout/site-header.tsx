@@ -3,30 +3,15 @@
 import { useCommandSearch } from "@/components/command-search-provider";
 import { PrepLoomLogo } from "@/components/preploom-logo";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import {
-  BookOpen,
-  Braces,
-  Code2,
-  Menu,
-  MessageSquareText,
-  Route,
-  Search,
-  X,
-} from "lucide-react";
+import { BookOpen, House, Info, Menu, Search, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const navigation = [
+  { label: "Home", href: "/", icon: House },
   { label: "Subjects", href: "/subjects", icon: BookOpen },
-  {
-    label: "Interview Questions",
-    href: "/interview-questions",
-    icon: MessageSquareText,
-  },
-  { label: "Roadmaps", href: "/roadmaps", icon: Route },
-  { label: "WebDev", href: "/webdev", icon: Code2 },
-  { label: "DSA", href: "/dsa", icon: Braces },
+  { label: "About", href: "/about", icon: Info },
 ];
 
 export function SiteHeader() {
@@ -50,7 +35,10 @@ export function SiteHeader() {
           className="ml-5 hidden items-center gap-1 xl:flex"
         >
           {navigation.map((item) => {
-            const active = pathname.startsWith(item.href);
+            const active =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href);
             return (
               <Link
                 key={item.label}
