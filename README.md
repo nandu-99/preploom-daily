@@ -36,11 +36,13 @@ Update `DATABASE_URL` in `backend/.env`, then generate the Prisma client:
 npm run prisma:generate --workspace backend
 ```
 
-When database models are added, create or apply migrations with:
+Apply the existing migrations with:
 
 ```bash
-npm run prisma:migrate --workspace backend
+npm run prisma:deploy --workspace @preploom/backend
 ```
+
+`GET /health` returns `200` when PostgreSQL is reachable and `503` when it is unavailable.
 
 Create or update the initial admin account using the credentials in
 `backend/.env`:

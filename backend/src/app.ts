@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
+import { prisma } from "./config/database.js";
 import { env } from "./config/env.js";
 import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
 import { adminAuthRouter } from "./routes/admin-auth.js";
@@ -27,6 +28,15 @@ app.get("/", (_request, response) => {
     service: "preploom-backend",
     status: "running",
   });
+});
+
+app.get("/health", async (_request, response) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    response.status(200).json({ status: "ok" });
+  } catch {
+    response.status(503).json({ status: "unavailable" });
+  }
 });
 
 app.use("/admin", adminAuthRouter);
