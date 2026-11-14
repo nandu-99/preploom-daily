@@ -36,7 +36,7 @@ Update `DATABASE_URL` in `backend/.env`, then generate the Prisma client:
 npm run prisma:generate --workspace backend
 ```
 
-Apply the existing migrations with:
+Apply the existing migrations separately with:
 
 ```bash
 npm run prisma:deploy --workspace @preploom/backend
@@ -44,12 +44,21 @@ npm run prisma:deploy --workspace @preploom/backend
 
 `GET /health` returns `200` when PostgreSQL is reachable and `503` when it is unavailable.
 
-Create or update the initial admin account using the credentials in
-`backend/.env`:
+Create or update the admin account and load the published PrepLoom content
+supported by the learner pages using the credentials in `backend/.env`.
+This command also applies pending migrations before inserting content:
 
 ```bash
 npm run prisma:seed --workspace backend
 ```
+
+This single seed file adds seven subjects, 228 lesson topics, 240 interview
+questions, and one ten-question quiz. It includes the original learn, revise,
+and last-minute lesson text. Re-running the command adds only missing content,
+so changes made through the admin portal are preserved. Images are recorded as
+source paths and descriptions in the lesson text, but the current topic reader
+does not display those images. Content for pages that are not yet available in
+PrepLoom Daily is not seeded.
 
 Topics can be read at `/subjects/:subjectSlug/topics` and
 `/subjects/:subjectSlug/topics/:topicSlug`. Admins can create topics with
