@@ -707,7 +707,7 @@ export function BinarySearchVisualizer() {
                 type="button"
                 disabled={finished}
                 onClick={() => jump(cursor + 1)}
-                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-neutral-800 px-4 text-sm font-medium text-white hover:bg-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-35 dark:bg-neutral-100 dark:text-black dark:hover:bg-neutral-300"
+                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-neutral-800 px-4 text-sm font-medium text-white hover:bg-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-35 dark:bg-[#242424] dark:text-[#f3f3f1] dark:hover:bg-[#2b2b2b]"
                 aria-label={`Next: ${nextAction}`}
               >
                 Next: {nextAction} <ChevronRight size={15} />

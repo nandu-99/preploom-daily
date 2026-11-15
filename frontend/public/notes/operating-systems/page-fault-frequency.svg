@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Page Fault Frequency control</title><desc id="desc">High page fault frequency means a process may need more frames. Low page fault frequency means some frames may be reclaimed.</desc>
+  <defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1l10 5-10 5z" fill="#D8D6D1"/></marker><style>.title{font:600 44px Inter,Arial,sans-serif;fill:#F2F0EB}.label{font:600 27px Inter,Arial,sans-serif;fill:#F2F0EB}.small{font:500 22px Inter,Arial,sans-serif;fill:#A8AAAB}.box{fill:#25282B;stroke:#D8D6D1;stroke-width:3}.line{fill:none;stroke:#D8D6D1;stroke-width:3;marker-end:url(#arrow)}</style></defs>
+  <rect width="1536" height="1024" fill="#25282B"/><text x="768" y="112" text-anchor="middle" class="title">PAGE FAULT FREQUENCY (PFF)</text>
+  <rect x="586" y="216" width="364" height="116" rx="18" class="box"/><text x="768" y="263" text-anchor="middle" class="label"><tspan x="768">MEASURE PAGE</tspan><tspan x="768" dy="35">FAULT RATE</tspan></text>
+  <path d="M768 332v116" class="line"/>
+  <path d="M768 430l122 92-122 92-122-92z" class="box"/><text x="768" y="512" text-anchor="middle" class="label"><tspan x="768">WITHIN</tspan><tspan x="768" dy="34">LIMITS?</tspan></text>
+  <path d="M646 522H386" class="line"/><text x="520" y="494" text-anchor="middle" class="small">TOO HIGH</text>
+  <rect x="92" y="464" width="278" height="116" rx="18" class="box"/><text x="231" y="511" text-anchor="middle" class="label"><tspan x="231">ALLOCATE</tspan><tspan x="231" dy="35">MORE FRAMES</tspan></text>
+  <path d="M890 522h260" class="line"/><text x="1016" y="494" text-anchor="middle" class="small">TOO LOW</text>
+  <rect x="1166" y="464" width="278" height="116" rx="18" class="box"/><text x="1305" y="511" text-anchor="middle" class="label"><tspan x="1305">RECLAIM</tspan><tspan x="1305" dy="35">EXTRA FRAMES</tspan></text>
+  <path d="M768 614v120" class="line"/><text x="798" y="683" class="small">ACCEPTABLE</text>
+  <rect x="586" y="750" width="364" height="116" rx="18" class="box"/><text x="768" y="797" text-anchor="middle" class="label"><tspan x="768">KEEP CURRENT</tspan><tspan x="768" dy="35">ALLOCATION</tspan></text>
+</svg>

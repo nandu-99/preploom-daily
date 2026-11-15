@@ -2,18 +2,68 @@
 
 import { useCommandSearch } from "@/components/command-search-provider";
 import { PrepLoomLogo } from "@/components/preploom-logo";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { BookOpen, Braces, House, Info, Menu, Search, X } from "lucide-react";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import { trackEvent } from "@/lib/analytics";
+import {
+  BookOpen,
+  Braces,
+  Code2,
+  Menu,
+  MessageSquareText,
+  Route,
+  Search,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 
 const navigation = [
-  { label: "Home", href: "/", icon: House },
-  { label: "Subjects", href: "/subjects", icon: BookOpen },
-  { label: "DSA", href: "/dsa", icon: Braces },
-  { label: "About", href: "/about", icon: Info },
+  { label: "Subjects", href: "/subjects" },
+  { label: "Interview Questions", href: "/interview-questions" },
+  { label: "Roadmaps", href: "/roadmaps" },
+  { label: "WebDev", href: "/webdev" },
+  { label: "DSA", href: "/dsa" },
 ];
+
+const mobileIcons = [BookOpen, MessageSquareText, Route, Code2, Braces];
+
+function SiteThemeToggle() {
+  const isDark = useSyncExternalStore(
+    (onThemeChange) => {
+      const observer = new MutationObserver(onThemeChange);
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+      window.addEventListener("storage", onThemeChange);
+      return () => {
+        observer.disconnect();
+        window.removeEventListener("storage", onThemeChange);
+      };
+    },
+    () => document.documentElement.classList.contains("dark"),
+    () => false,
+  );
+
+  const handleThemeChange = (theme: "light" | "dark") => {
+    const root = document.documentElement;
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+    localStorage.setItem("preploom-theme", theme);
+  };
+
+  return (
+    <AnimatedThemeToggler
+      theme={isDark ? "dark" : "light"}
+      onThemeChange={handleThemeChange}
+      variant="circle"
+      duration={350}
+      className="grid size-10 place-items-center rounded-[10px] border border-black/[0.11] text-[#555] transition-colors hover:border-black/25 hover:bg-black/[0.04] hover:text-[#151515] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border-white/[0.12] dark:text-[#b3b3b3] dark:hover:border-white/25 dark:hover:bg-white/[0.06] dark:hover:text-white dark:focus-visible:ring-white/50 [&_svg]:size-[17px]"
+      aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
+    />
+  );
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -25,6 +75,13 @@ export function SiteHeader() {
       <div className="mx-auto flex h-[68px] max-w-[1440px] items-center gap-5 px-5 sm:px-6 lg:px-8">
         <Link
           href="/"
+          onClick={() =>
+            trackEvent("navigation_click", {
+              link_text: "PrepLoom home",
+              destination: "/",
+              ui_location: "header_logo",
+            })
+          }
           aria-label="PrepLoom home"
           className="shrink-0 rounded-[10px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/50"
         >
@@ -36,15 +93,23 @@ export function SiteHeader() {
           className="ml-5 hidden items-center gap-1 xl:flex"
         >
           {navigation.map((item) => {
-            const active =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href);
+            const active = pathname.startsWith(item.href);
             return (
               <Link
                 key={item.label}
                 href={item.href}
-                className={`rounded-[8px] px-3 py-2 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/50 ${active ? "bg-black/[0.06] font-medium text-[#151515] dark:bg-white/[0.08] dark:text-white" : "text-[#606060] hover:bg-black/[0.035] hover:text-[#151515] dark:text-[#a8a8a8] dark:hover:bg-white/[0.05] dark:hover:text-white"}`}
+                onClick={() =>
+                  trackEvent("navigation_click", {
+                    link_text: item.label,
+                    destination: item.href,
+                    ui_location: "header_desktop",
+                  })
+                }
+                className={`rounded-[8px] px-3 py-2 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/50 ${
+                  active
+                    ? "bg-black/[0.06] font-medium text-[#151515] dark:bg-white/[0.08] dark:text-white"
+                    : "text-[#606060] hover:bg-black/[0.035] hover:text-[#151515] dark:text-[#a8a8a8] dark:hover:bg-white/[0.05] dark:hover:text-white"
+                }`}
                 aria-current={active ? "page" : undefined}
               >
                 {item.label}
@@ -59,7 +124,8 @@ export function SiteHeader() {
             onClick={openSearch}
             aria-label="Search PrepLoom"
             aria-expanded={searchOpen}
-            className="grid size-10 place-items-center rounded-[10px] border border-black/[0.11] text-[#555] hover:border-black/25 dark:border-white/[0.12] dark:text-[#b3b3b3] sm:hidden"
+            aria-controls="preploom-command-search"
+            className="grid size-10 place-items-center rounded-[10px] border border-black/[0.11] text-[#555] transition-colors hover:border-black/25 hover:text-[#151515] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border-white/[0.12] dark:text-[#b3b3b3] dark:hover:border-white/25 dark:hover:text-white dark:focus-visible:ring-white/50 sm:hidden"
           >
             <Search
               className="size-[18px]"
@@ -71,7 +137,8 @@ export function SiteHeader() {
             type="button"
             onClick={openSearch}
             aria-expanded={searchOpen}
-            className="group hidden h-10 w-[clamp(220px,22vw,340px)] items-center gap-2.5 rounded-[10px] border border-black/[0.11] bg-black/[0.025] px-3 text-[13px] text-[#606060] transition-colors hover:border-black/25 hover:bg-white hover:text-[#151515] dark:border-white/[0.12] dark:bg-white/[0.04] dark:text-[#a8a8a8] dark:hover:border-white/25 dark:hover:bg-[#141414] dark:hover:text-white sm:flex"
+            aria-controls="preploom-command-search"
+            className="group hidden h-10 w-[clamp(220px,22vw,340px)] items-center gap-2.5 rounded-[10px] border border-black/[0.11] bg-black/[0.025] px-3 text-[13px] text-[#606060] transition-colors hover:border-black/25 hover:bg-white hover:text-[#151515] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border-white/[0.12] dark:bg-white/[0.04] dark:text-[#a8a8a8] dark:hover:border-white/25 dark:hover:bg-[#141414] dark:hover:text-white dark:focus-visible:ring-white/50 sm:flex"
           >
             <Search
               className="size-4 shrink-0"
@@ -85,18 +152,22 @@ export function SiteHeader() {
               ⌘ K
             </kbd>
           </button>
-          <ThemeToggle />
+          <SiteThemeToggle />
           <button
             type="button"
-            onClick={() => setMenuOpen((value) => !value)}
+            onClick={() => setMenuOpen((current) => !current)}
             aria-expanded={menuOpen}
-            aria-controls="mobile-menu"
-            className="grid size-10 place-items-center rounded-[10px] border border-black/[0.11] text-[#555] hover:border-black/25 dark:border-white/[0.12] dark:text-[#b3b3b3] xl:hidden"
+            aria-controls="hybrid-mobile-menu"
+            className="grid size-10 place-items-center rounded-[10px] border border-black/[0.11] text-[#555] transition-colors hover:border-black/25 hover:text-[#151515] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border-white/[0.12] dark:text-[#b3b3b3] dark:hover:border-white/25 dark:hover:text-white dark:focus-visible:ring-white/50 xl:hidden"
           >
             {menuOpen ? (
-              <X className="size-[18px]" aria-hidden="true" />
+              <X className="size-[18px]" strokeWidth={1.7} aria-hidden="true" />
             ) : (
-              <Menu className="size-[18px]" aria-hidden="true" />
+              <Menu
+                className="size-[18px]"
+                strokeWidth={1.7}
+                aria-hidden="true"
+              />
             )}
             <span className="sr-only">
               {menuOpen ? "Close navigation" : "Open navigation"}
@@ -106,9 +177,13 @@ export function SiteHeader() {
       </div>
 
       <div
-        id="mobile-menu"
+        id="hybrid-mobile-menu"
         aria-hidden={!menuOpen}
-        className={`absolute inset-x-3 top-[calc(100%+0.5rem)] rounded-[16px] border border-black/[0.11] bg-[#f7f7f5] p-2 shadow-[0_24px_70px_rgba(0,0,0,0.16)] transition-[opacity,transform,visibility] dark:border-white/[0.12] dark:bg-[#111] xl:hidden ${menuOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"}`}
+        className={`absolute inset-x-3 top-[calc(100%+0.5rem)] rounded-[16px] border border-black/[0.11] bg-[#f7f7f5] p-2 shadow-[0_24px_70px_rgba(0,0,0,0.16)] transition-[opacity,transform,visibility] dark:border-white/[0.12] dark:bg-[#111] dark:shadow-[0_28px_80px_rgba(0,0,0,0.5)] xl:hidden ${
+          menuOpen
+            ? "visible translate-y-0 opacity-100"
+            : "invisible -translate-y-1 opacity-0"
+        }`}
       >
         <button
           type="button"
@@ -119,22 +194,33 @@ export function SiteHeader() {
           tabIndex={menuOpen ? 0 : -1}
           className="flex min-h-11 w-full items-center gap-3 rounded-[10px] px-3 text-[14px] text-[#555] hover:bg-black/[0.05] dark:text-[#b3b3b3] dark:hover:bg-white/[0.07]"
         >
-          <Search className="size-4" aria-hidden="true" /> Search PrepLoom{" "}
+          <Search className="size-4" strokeWidth={1.7} aria-hidden="true" />
+          Search PrepLoom
           <kbd className="ml-auto text-[10px]">⌘ K</kbd>
         </button>
         <nav className="mt-1 grid gap-1" aria-label="Primary mobile navigation">
-          {navigation.map(({ label, href, icon: Icon }) => (
-            <Link
-              key={label}
-              href={href}
-              onClick={() => setMenuOpen(false)}
-              tabIndex={menuOpen ? 0 : -1}
-              className="flex min-h-11 items-center gap-3 rounded-[10px] px-3 text-[14px] text-[#555] hover:bg-black/[0.05] hover:text-[#151515] dark:text-[#b3b3b3] dark:hover:bg-white/[0.07] dark:hover:text-white"
-            >
-              <Icon className="size-4" strokeWidth={1.7} aria-hidden="true" />{" "}
-              {label}
-            </Link>
-          ))}
+          {navigation.map((item, index) => {
+            const Icon = mobileIcons[index];
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={() => {
+                  trackEvent("navigation_click", {
+                    link_text: item.label,
+                    destination: item.href,
+                    ui_location: "header_mobile",
+                  });
+                  setMenuOpen(false);
+                }}
+                tabIndex={menuOpen ? 0 : -1}
+                className="flex min-h-11 items-center gap-3 rounded-[10px] px-3 text-[14px] text-[#555] hover:bg-black/[0.05] hover:text-[#151515] dark:text-[#b3b3b3] dark:hover:bg-white/[0.07] dark:hover:text-white"
+              >
+                <Icon className="size-4" strokeWidth={1.7} aria-hidden="true" />
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>

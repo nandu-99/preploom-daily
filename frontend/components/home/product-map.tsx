@@ -1,7 +1,8 @@
 import {
   ArrowRight,
   BookOpen,
-  CircleHelp,
+  Braces,
+  Code2,
   Cpu,
   Database,
   MessageSquareText,
@@ -11,7 +12,7 @@ import {
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-type TileProps = {
+type ProductTileProps = {
   href: string;
   title: string;
   description: string;
@@ -21,7 +22,7 @@ type TileProps = {
   children?: ReactNode;
 };
 
-function Tile({
+function ProductTile({
   href,
   title,
   description,
@@ -29,11 +30,11 @@ function Tile({
   className,
   contentClassName = "",
   children,
-}: TileProps) {
+}: ProductTileProps) {
   return (
     <Link
       href={href}
-      className={`group relative flex min-h-[132px] overflow-hidden rounded-[16px] border border-black/[0.1] bg-black/[0.018] p-5 transition-[border-color,background-color,transform] hover:-translate-y-0.5 hover:border-black/25 hover:bg-black/[0.035] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border-white/[0.11] dark:bg-white/[0.025] dark:hover:border-white/25 dark:hover:bg-white/[0.05] sm:p-6 ${className}`}
+      className={`group relative flex min-h-[132px] overflow-hidden rounded-[16px] border border-black/[0.1] bg-black/[0.018] p-5 transition-[border-color,background-color,transform] hover:-translate-y-0.5 hover:border-black/25 hover:bg-black/[0.035] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f7f7f5] active:translate-y-0 dark:border-white/[0.11] dark:bg-white/[0.025] dark:hover:border-white/25 dark:hover:bg-white/[0.05] dark:focus-visible:ring-white/50 dark:focus-visible:ring-offset-[#0a0a0a] sm:p-6 ${className}`}
     >
       <div
         className={`relative z-10 flex min-w-0 flex-1 flex-col ${contentClassName}`}
@@ -53,20 +54,20 @@ function Tile({
       {children}
       <ArrowRight
         className="absolute right-5 top-5 size-4 text-[#777] transition-transform group-hover:translate-x-0.5 dark:text-[#999] sm:right-6 sm:top-6"
+        strokeWidth={1.7}
         aria-hidden="true"
       />
     </Link>
   );
 }
 
-export function ProductMap({ subjectSlug }: { subjectSlug?: string }) {
-  const subjectHref = subjectSlug ? `/subjects/${subjectSlug}` : "/subjects";
+export function ProductMap() {
   return (
     <div className="grid gap-3 md:grid-cols-12 md:auto-rows-[166px] lg:auto-rows-[176px]">
-      <Tile
+      <ProductTile
         href="/subjects"
         title="Subjects"
-        description="Explore subjects and their notes, roadmaps, questions, and quizzes."
+        description="Learn Operating Systems, DBMS, networks, OOP, and other core interview subjects."
         icon={BookOpen}
         className="md:col-span-7 md:row-span-2"
         contentClassName="sm:max-w-[54%]"
@@ -75,45 +76,51 @@ export function ProductMap({ subjectSlug }: { subjectSlug?: string }) {
           aria-hidden="true"
           className="absolute right-5 top-1/2 hidden -translate-y-1/2 items-center gap-3 text-[#777] opacity-65 sm:flex md:right-8 lg:right-12"
         >
-          {[Cpu, Database, Network].map((Icon, index) => (
+          {[Cpu, Database, Network].map((SubjectIcon, index) => (
             <span
               key={index}
-              className={`grid place-items-center rounded-[14px] border border-black/[0.1] dark:border-white/[0.12] ${index === 1 ? "size-16" : "size-12"}`}
+              className={`grid place-items-center rounded-[14px] border border-black/[0.1] dark:border-white/[0.12] ${
+                index === 1 ? "size-16" : "size-12"
+              }`}
             >
-              <Icon
+              <SubjectIcon
                 className={index === 1 ? "size-6" : "size-[18px]"}
                 strokeWidth={1.4}
               />
             </span>
           ))}
         </div>
-      </Tile>
-      <Tile
-        href={`${subjectHref}#roadmaps`}
+      </ProductTile>
+
+      <ProductTile
+        href="/roadmaps"
         title="Roadmaps"
         description="Follow a clear path for the role or goal you are preparing for."
         icon={Route}
         className="md:col-span-5"
       />
-      <Tile
-        href={`${subjectHref}#questions`}
+
+      <ProductTile
+        href="/interview-questions"
         title="Interview questions"
         description="Practise behavioral and technical questions with concise answers and recall mode."
         icon={MessageSquareText}
         className="md:col-span-5"
       />
-      <Tile
-        href={`${subjectHref}#quizzes`}
-        title="Quizzes"
-        description="Choose answers, submit a quiz, and review your result."
-        icon={CircleHelp}
+
+      <ProductTile
+        href="/dsa"
+        title="Trusted DSA sheets"
+        description="Choose a proven sheet. Questions and progress stay on the original platform."
+        icon={Braces}
         className="md:col-span-5"
       />
-      <Tile
-        href={`${subjectHref}#topics`}
-        title="Topic notes"
-        description="Read focused notes added through the admin portal."
-        icon={BookOpen}
+
+      <ProductTile
+        href="/webdev"
+        title="WebDev resources"
+        description="Useful websites, project ideas, components, setup guides, and Skills.md."
+        icon={Code2}
         className="md:col-span-7"
       />
     </div>

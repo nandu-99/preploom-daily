@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
+import "katex/dist/katex.min.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -42,7 +43,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col font-[family-name:var(--font-geist-sans)]">
         <CommandSearchProvider>{children}</CommandSearchProvider>
       </body>
     </html>

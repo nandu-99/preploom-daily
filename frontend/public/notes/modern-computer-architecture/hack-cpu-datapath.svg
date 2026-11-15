@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Hack CPU datapath</title>
+  <desc id="desc">The A input multiplexer loads the A register from the instruction or ALU result. The D register feeds ALU x. The A or inM multiplexer feeds ALU y. The ALU drives outM and can load A or D. A supplies addressM and the PC jump target. Jump logic uses instruction bits and ALU flags to control the PC.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#D8D6D1"/>
+    </marker>
+    <style>
+      text{font-family:Inter,Arial,sans-serif;fill:#F2F0EB}
+      .h{font-size:38px;font-weight:700}
+      .l{font-size:23px;font-weight:600}
+      .s{font-size:17px;fill:#A8AAAB}
+      .box{fill:none;stroke:#D8D6D1;stroke-width:4}
+      .line{fill:none;stroke:#D8D6D1;stroke-width:4;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect width="1536" height="1024" fill="#25282B"/>
+  <text x="72" y="70" class="h">HACK CPU DATAPATH</text>
+
+  <text x="45" y="210" class="s">instruction[14:0]</text>
+  <path d="M45 240H110" class="line"/>
+  <rect x="110" y="175" width="240" height="150" rx="16" class="box"/>
+  <text x="230" y="237" text-anchor="middle" class="l">A INPUT MUX</text>
+  <text x="230" y="274" text-anchor="middle" class="s">instruction / ALU result</text>
+
+  <path d="M350 250H430" class="line"/>
+  <rect x="430" y="175" width="190" height="150" rx="16" class="box"/>
+  <text x="525" y="266" text-anchor="middle" class="h">A REG</text>
+
+  <rect x="430" y="515" width="190" height="150" rx="16" class="box"/>
+  <text x="525" y="606" text-anchor="middle" class="h">D REG</text>
+
+  <rect x="730" y="260" width="230" height="155" rx="16" class="box"/>
+  <text x="845" y="328" text-anchor="middle" class="l">A / inM MUX</text>
+  <text x="845" y="365" text-anchor="middle" class="s">select ALU y input</text>
+
+  <rect x="1050" y="300" width="250" height="205" rx="20" class="box"/>
+  <text x="1175" y="397" text-anchor="middle" class="h">ALU</text>
+  <text x="1175" y="445" text-anchor="middle" class="s">zx nx zy ny f no</text>
+
+  <path d="M620 250H680V305H730" class="line"/>
+  <text x="660" y="225" class="s">A out</text>
+  <path d="M645 382H730" class="line"/>
+  <text x="645" y="360" class="s">inM</text>
+  <path d="M960 338H1050" class="line"/>
+  <text x="1005" y="315" text-anchor="middle" class="s">y</text>
+  <path d="M620 590H995V465H1050" class="line"/>
+  <text x="815" y="620" text-anchor="middle" class="s">D out supplies x</text>
+
+  <path d="M1300 402H1470" class="line"/>
+  <text x="1385" y="375" text-anchor="middle" class="s">outM</text>
+
+  <path d="M620 275H680V135H1470" class="line"/>
+  <text x="1220" y="112" class="s">addressM = A[14:0]</text>
+
+  <path d="M1365 402V885H230V325" class="line"/>
+  <path d="M525 885V665" class="line"/>
+  <text x="800" y="925" text-anchor="middle" class="s">ALU result feedback loads A or D when its destination bit is set</text>
+
+  <rect x="735" y="700" width="255" height="125" rx="16" class="box"/>
+  <text x="863" y="755" text-anchor="middle" class="l">JUMP LOGIC</text>
+  <text x="863" y="792" text-anchor="middle" class="s">j bits + zr/ng</text>
+  <path d="M650 762H735" class="line"/>
+  <text x="650" y="737" class="s">instruction jump bits</text>
+
+  <rect x="1110" y="680" width="210" height="165" rx="16" class="box"/>
+  <text x="1215" y="752" text-anchor="middle" class="h">PC</text>
+  <text x="1215" y="794" text-anchor="middle" class="s">load A or PC + 1</text>
+  <path d="M990 762H1110" class="line"/>
+  <text x="1050" y="738" text-anchor="middle" class="s">loadPC</text>
+
+  <path d="M620 290H670V650H1160V680" class="line"/>
+  <text x="880" y="678" text-anchor="middle" class="s">jump target = A</text>
+  <path d="M1320 762H1470" class="line"/>
+  <text x="1395" y="737" text-anchor="middle" class="s">pc</text>
+  <path d="M1030 815H1110" class="line"/>
+  <text x="1070" y="790" text-anchor="middle" class="s">reset</text>
+
+  <text x="72" y="970" class="s">Clocked state: A, D, PC. Combinational signals: ALU, outM, writeM, zr, ng.</text>
+</svg>

@@ -144,7 +144,7 @@ export function bubbleSortSteps(values: number[]): BubbleStep[] {
 export function parseBubbleInput(input: string): number[] {
   const parts = input.split(",").map((part) => part.trim());
   if (parts.length > 12 || parts.some((part) => !/^-?\d+$/.test(part)))
-    throw new Error("Enter 1–12 whole numbers, separated by commas.");
+    throw new Error("Enter 1-12 whole numbers, separated by commas.");
   const values = parts.map(Number);
   if (
     values.some((value) => !Number.isSafeInteger(value) || Math.abs(value) > 99)

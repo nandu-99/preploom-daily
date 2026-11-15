@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Clocked sequential logic</title><desc id="desc">Inputs and current state enter next-state logic. A state register stores the next state on a clock edge and feeds its current state back. Output logic reads state and optionally inputs.</desc>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10z" fill="#D8D6D1"/></marker><style>text{font-family:Inter,Arial,sans-serif;fill:#F2F0EB}.h{font-size:42px;font-weight:700}.l{font-size:26px}.s{font-size:20px;fill:#A8AAAB}.box{fill:none;stroke:#D8D6D1;stroke-width:4}.line{fill:none;stroke:#D8D6D1;stroke-width:4;marker-end:url(#a)}</style></defs>
+  <rect width="1536" height="1024" fill="#25282B"/><text x="96" y="100" class="h">SEQUENTIAL LOGIC: STATE IS STORED</text>
+  <rect x="250" y="270" width="350" height="190" rx="18" class="box"/><text x="425" y="345" text-anchor="middle" class="l">NEXT-STATE</text><text x="425" y="382" text-anchor="middle" class="l">LOGIC f</text><text x="425" y="420" text-anchor="middle" class="s">calculates State(next)</text>
+  <rect x="760" y="270" width="300" height="190" rx="18" class="box"/><text x="910" y="345" text-anchor="middle" class="l">STATE</text><text x="910" y="382" text-anchor="middle" class="l">REGISTER</text><text x="910" y="420" text-anchor="middle" class="s">stores at clock edge</text>
+  <rect x="760" y="650" width="300" height="150" rx="18" class="box"/><text x="910" y="715" text-anchor="middle" class="l">OUTPUT LOGIC g</text><text x="910" y="756" text-anchor="middle" class="s">state; input if Mealy</text>
+  <path d="M75 335H250" class="line"/><text x="78" y="310" class="l">Inputs</text><path d="M600 365H760" class="line"/><text x="630" y="340" class="s">next state</text>
+  <path d="M1060 365H1255V550H425V460" class="line"/><text x="1085" y="340" class="s">current state / Q</text>
+  <path d="M910 460V650" class="line"/><path d="M75 730H760" class="line"/><text x="78" y="700" class="s">current inputs (Mealy only)</text><path d="M1060 725H1390" class="line"/><text x="1250" y="695" class="l">Output</text>
+  <path d="M910 185V270" class="line"/><text x="910" y="155" text-anchor="middle" class="l">Clock</text>
+  <text x="96" y="925" class="s">State(next) = f(State(current), Inputs)   •   Moore output = g(State)   •   Mealy output = g(State, Inputs)</text>
+</svg>

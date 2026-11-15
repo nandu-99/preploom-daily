@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Build 4K by 16 memory from eight 1K by 8 chips</title>
+  <desc id="desc">High address bits A11 and A10 enter a two-to-four decoder that enables one of four banks. Each bank contains two parallel 1K by 8 chips, one for the high byte and one for the low byte. Address bits A9 through A0 select the same word position inside every bank.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#D8D6D1"/>
+    </marker>
+    <style>
+      text{font-family:Inter,Arial,sans-serif;fill:#F2F0EB}
+      .h{font-size:38px;font-weight:700}
+      .l{font-size:22px;font-weight:600}
+      .s{font-size:17px;fill:#A8AAAB}
+      .box{fill:none;stroke:#D8D6D1;stroke-width:3}
+      .bank{fill:none;stroke:#777A7C;stroke-width:2;stroke-dasharray:9 7}
+      .line{fill:none;stroke:#D8D6D1;stroke-width:3}
+      .arrow{fill:none;stroke:#D8D6D1;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect width="1536" height="1024" fill="#25282B"/>
+  <text x="768" y="72" text-anchor="middle" class="h">4K × 16 FROM EIGHT 1K × 8 CHIPS</text>
+  <text x="585" y="115" text-anchor="middle" class="l">HIGH BYTE D15..D8</text>
+  <text x="930" y="115" text-anchor="middle" class="l">LOW BYTE D7..D0</text>
+
+  <text x="48" y="345" class="l">A11..A10</text>
+  <path d="M48 375H105" class="arrow"/>
+  <rect x="105" y="300" width="225" height="150" rx="16" class="box"/>
+  <text x="218" y="365" text-anchor="middle" class="l">2-TO-4</text>
+  <text x="218" y="397" text-anchor="middle" class="l">DECODER</text>
+  <text x="218" y="425" text-anchor="middle" class="s">select one bank</text>
+
+  <path d="M330 330L405 205" class="arrow"/>
+  <path d="M330 360L405 410" class="arrow"/>
+  <path d="M330 390L405 615" class="arrow"/>
+  <path d="M330 420L405 820" class="arrow"/>
+
+  <g>
+    <rect x="405" y="135" width="735" height="165" rx="16" class="bank"/>
+    <rect x="405" y="340" width="735" height="165" rx="16" class="bank"/>
+    <rect x="405" y="545" width="735" height="165" rx="16" class="bank"/>
+    <rect x="405" y="750" width="735" height="165" rx="16" class="bank"/>
+
+    <text x="430" y="166" class="s">BANK 0</text>
+    <text x="430" y="371" class="s">BANK 1</text>
+    <text x="430" y="576" class="s">BANK 2</text>
+    <text x="430" y="781" class="s">BANK 3</text>
+
+    <rect x="445" y="180" width="285" height="92" rx="12" class="box"/>
+    <rect x="790" y="180" width="285" height="92" rx="12" class="box"/>
+    <rect x="445" y="385" width="285" height="92" rx="12" class="box"/>
+    <rect x="790" y="385" width="285" height="92" rx="12" class="box"/>
+    <rect x="445" y="590" width="285" height="92" rx="12" class="box"/>
+    <rect x="790" y="590" width="285" height="92" rx="12" class="box"/>
+    <rect x="445" y="795" width="285" height="92" rx="12" class="box"/>
+    <rect x="790" y="795" width="285" height="92" rx="12" class="box"/>
+
+    <text x="588" y="220" text-anchor="middle" class="l">1K × 8 CHIP</text>
+    <text x="588" y="250" text-anchor="middle" class="s">bits D15..D8</text>
+    <text x="933" y="220" text-anchor="middle" class="l">1K × 8 CHIP</text>
+    <text x="933" y="250" text-anchor="middle" class="s">bits D7..D0</text>
+
+    <text x="588" y="425" text-anchor="middle" class="l">1K × 8 CHIP</text>
+    <text x="588" y="455" text-anchor="middle" class="s">bits D15..D8</text>
+    <text x="933" y="425" text-anchor="middle" class="l">1K × 8 CHIP</text>
+    <text x="933" y="455" text-anchor="middle" class="s">bits D7..D0</text>
+
+    <text x="588" y="630" text-anchor="middle" class="l">1K × 8 CHIP</text>
+    <text x="588" y="660" text-anchor="middle" class="s">bits D15..D8</text>
+    <text x="933" y="630" text-anchor="middle" class="l">1K × 8 CHIP</text>
+    <text x="933" y="660" text-anchor="middle" class="s">bits D7..D0</text>
+
+    <text x="588" y="835" text-anchor="middle" class="l">1K × 8 CHIP</text>
+    <text x="588" y="865" text-anchor="middle" class="s">bits D15..D8</text>
+    <text x="933" y="835" text-anchor="middle" class="l">1K × 8 CHIP</text>
+    <text x="933" y="865" text-anchor="middle" class="s">bits D7..D0</text>
+  </g>
+
+  <path d="M1185 155V895" class="line"/>
+  <path d="M1140 205H1185M1140 410H1185M1140 615H1185M1140 820H1185" class="line"/>
+  <text x="1185" y="115" text-anchor="middle" class="l">A9..A0</text>
+  <text x="1215" y="145" class="s">shared word address</text>
+
+  <path d="M730 226H755V930" class="line"/>
+  <path d="M730 431H755M730 636H755M730 841H755" class="line"/>
+  <path d="M1075 226H1110V930" class="line"/>
+  <path d="M1075 431H1110M1075 636H1110M1075 841H1110" class="line"/>
+  <path d="M755 930H1110" class="line"/>
+  <text x="933" y="964" text-anchor="middle" class="s">two byte columns combine into one 16-bit word</text>
+</svg>

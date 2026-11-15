@@ -31,6 +31,7 @@ export const subjectsRouter = Router();
 subjectsRouter.get("/", async (_request, response) => {
   const subjects = await prisma.subject.findMany({
     orderBy: { name: "asc" },
+    select: { id: true, name: true, slug: true, description: true },
   });
 
   response.status(200).json({ data: { subjects } });

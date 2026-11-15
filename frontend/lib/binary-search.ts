@@ -115,7 +115,7 @@ export function binarySearchSteps(
 export function parseSearchInput(array: string, target: string) {
   const parts = array.split(",").map((part) => part.trim());
   if (parts.length > 20 || parts.some((part) => !/^-?\d+$/.test(part)))
-    throw new Error("Enter 1–20 whole numbers separated by commas.");
+    throw new Error("Enter 1-20 whole numbers separated by commas.");
   const values = parts.map(Number);
   if (
     values.some(

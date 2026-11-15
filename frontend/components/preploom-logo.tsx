@@ -1,20 +1,22 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
+type PrepLoomLogoProps = {
+  className?: string;
+  preload?: boolean;
+};
+
 export function PrepLoomLogo({
   className,
   preload = false,
-}: {
-  className?: string;
-  preload?: boolean;
-}) {
+}: PrepLoomLogoProps) {
   return (
     <span
       aria-hidden="true"
       className={cn("relative block shrink-0", className)}
     >
       <Image
-        src="https://preploom.vercel.app/light-logo.png"
+        src="/light-logo.png"
         alt=""
         fill
         sizes="160px"
@@ -22,7 +24,7 @@ export function PrepLoomLogo({
         className="object-contain object-left dark:hidden"
       />
       <Image
-        src="https://preploom.vercel.app/dark-logo.png"
+        src="/dark-logo.png"
         alt=""
         fill
         sizes="160px"

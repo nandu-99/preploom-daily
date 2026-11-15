@@ -1,6 +1,7 @@
 "use client";
 
 import { AdminHeader } from "@/components/admin/admin-header";
+import { PublicContentNotice } from "@/components/admin/public-content-notice";
 import { clearAdminToken, getAdminToken } from "@/lib/admin-session";
 import {
   ArrowDown,
@@ -456,6 +457,7 @@ export default function AdminQuizzesPage() {
   return (
     <div className="min-h-[100dvh] bg-[#f7f7f5] text-[#151515] dark:bg-[#0a0a0a] dark:text-[#f3f3f1]">
       <AdminHeader onLogout={logout} />
+      <PublicContentNotice />
       <main>
         <section className="border-b border-black/[0.08] px-5 py-10 dark:border-white/[0.09] sm:px-6 sm:py-12 lg:px-8">
           <div className="mx-auto max-w-[1240px]">
@@ -487,7 +489,7 @@ export default function AdminQuizzesPage() {
                 type="button"
                 onClick={startNewQuiz}
                 disabled={!subject || loadingQuizId !== null}
-                className="inline-flex h-11 w-fit items-center gap-2 rounded-[10px] bg-[#151515] px-4 text-[13px] font-medium text-white transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:border dark:border-white/[0.14] dark:bg-[#f3f3f1] dark:text-[#151515]"
+                className="inline-flex h-11 w-fit items-center gap-2 rounded-[10px] bg-[#151515] px-4 text-[13px] font-medium text-white transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:border dark:border-white/[0.14] dark:bg-[#242424] dark:text-[#f3f3f1]"
               >
                 <Plus className="size-4" aria-hidden="true" />
                 New quiz
@@ -783,7 +785,7 @@ export default function AdminQuizzesPage() {
                 <button
                   type="submit"
                   disabled={!subject || saving || loadingQuizId !== null}
-                  className="inline-flex h-11 items-center justify-center rounded-[10px] bg-[#151515] px-4 text-[13px] font-medium text-white transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-55 dark:border dark:border-white/[0.14] dark:bg-[#f3f3f1] dark:text-[#151515]"
+                  className="inline-flex h-11 items-center justify-center rounded-[10px] bg-[#151515] px-4 text-[13px] font-medium text-white transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-55 dark:border dark:border-white/[0.14] dark:bg-[#242424] dark:text-[#f3f3f1]"
                 >
                   {saving
                     ? "Saving..."

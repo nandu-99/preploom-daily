@@ -141,7 +141,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-[10px] bg-[#151515] px-5 text-[14px] font-medium text-white transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-55 dark:border dark:border-white/[0.14] dark:bg-[#f3f3f1] dark:text-[#151515]"
+              className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-[10px] bg-[#151515] px-5 text-[14px] font-medium text-white transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-55 dark:border dark:border-white/[0.14] dark:bg-[#242424] dark:text-[#f3f3f1]"
             >
               {submitting ? "Signing in..." : "Sign in"}
               {!submitting ? (

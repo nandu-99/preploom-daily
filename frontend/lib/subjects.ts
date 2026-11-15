@@ -3,6 +3,7 @@ export type Subject = {
   name: string;
   slug: string;
   description: string | null;
+  course?: unknown;
 };
 
 export type TopicSummary = {

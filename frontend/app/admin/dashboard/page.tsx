@@ -1,6 +1,7 @@
 "use client";
 
 import { AdminHeader } from "@/components/admin/admin-header";
+import { PublicContentNotice } from "@/components/admin/public-content-notice";
 import { clearAdminToken, getAdminToken } from "@/lib/admin-session";
 import { BookOpen, Plus, SquarePen, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -190,6 +191,7 @@ export default function AdminDashboardPage() {
   return (
     <div className="min-h-[100dvh] bg-[#f7f7f5] text-[#151515] dark:bg-[#0a0a0a] dark:text-[#f3f3f1]">
       <AdminHeader onLogout={logout} />
+      <PublicContentNotice />
       <main>
         <section className="border-b border-black/[0.08] px-5 py-10 dark:border-white/[0.09] sm:px-6 sm:py-12 lg:px-8">
           <div className="mx-auto flex max-w-[1240px] flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -207,7 +209,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={resetForm}
-              className="inline-flex h-11 w-fit items-center gap-2 rounded-[10px] bg-[#151515] px-4 text-[13px] font-medium text-white transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] dark:border dark:border-white/[0.14] dark:bg-[#f3f3f1] dark:text-[#151515]"
+              className="inline-flex h-11 w-fit items-center gap-2 rounded-[10px] bg-[#151515] px-4 text-[13px] font-medium text-white transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] dark:border dark:border-white/[0.14] dark:bg-[#242424] dark:text-[#f3f3f1]"
             >
               <Plus className="size-4" aria-hidden="true" />
               New subject
@@ -305,7 +307,7 @@ export default function AdminDashboardPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="inline-flex h-11 items-center justify-center rounded-[10px] bg-[#151515] px-4 text-[13px] font-medium text-white transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-55 dark:border dark:border-white/[0.14] dark:bg-[#f3f3f1] dark:text-[#151515]"
+                  className="inline-flex h-11 items-center justify-center rounded-[10px] bg-[#151515] px-4 text-[13px] font-medium text-white transition-[opacity,transform] hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-55 dark:border dark:border-white/[0.14] dark:bg-[#242424] dark:text-[#f3f3f1]"
                 >
                   {saving
                     ? "Saving..."
@@ -372,22 +374,45 @@ export default function AdminDashboardPage() {
                   {subjects.map((subject) => (
                     <article
                       key={subject.id}
-                      className="grid gap-4 border-b border-black/[0.09] py-6 dark:border-white/[0.1] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start"
+                      className="border-b border-black/[0.09] py-6 dark:border-white/[0.1]"
                     >
-                      <div className="min-w-0">
-                        <h3 className="text-[17px] font-medium tracking-[-0.025em]">
-                          {subject.name}
-                        </h3>
-                        <p className="mt-1 font-[family-name:var(--font-geist-mono)] text-[11px] text-[#777] dark:text-[#8f8f8f]">
-                          /{subject.slug}
-                        </p>
-                        {subject.description ? (
-                          <p className="mt-3 max-w-[62ch] text-[13px] leading-6 text-[#606060] dark:text-[#a8a8a8]">
-                            {subject.description}
+                      <div className="flex min-w-0 items-start justify-between gap-4">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-[17px] font-medium tracking-[-0.025em]">
+                            {subject.name}
+                          </h3>
+                          <p className="mt-1 break-words font-[family-name:var(--font-geist-mono)] text-[11px] text-[#777] dark:text-[#8f8f8f]">
+                            /{subject.slug}
                           </p>
-                        ) : null}
+                        </div>
+                        <div className="flex shrink-0 items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => editSubject(subject)}
+                            title={`Edit ${subject.name}`}
+                            className="grid size-9 place-items-center rounded-[9px] border border-black/[0.1] text-[#606060] transition-colors hover:border-black/25 hover:text-[#151515] active:scale-[0.96] dark:border-white/[0.11] dark:text-[#a8a8a8] dark:hover:border-white/25 dark:hover:text-white"
+                          >
+                            <SquarePen className="size-4" strokeWidth={1.7} aria-hidden="true" />
+                            <span className="sr-only">Edit {subject.name}</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => void deleteSubject(subject)}
+                            disabled={deletingId === subject.id}
+                            title={`Delete ${subject.name}`}
+                            className="grid size-9 place-items-center rounded-[9px] border border-black/[0.1] text-[#606060] transition-colors hover:border-red-700/30 hover:text-red-700 active:scale-[0.96] disabled:opacity-45 dark:border-white/[0.11] dark:text-[#a8a8a8] dark:hover:border-red-300/30 dark:hover:text-red-300"
+                          >
+                            <Trash2 className="size-4" strokeWidth={1.7} aria-hidden="true" />
+                            <span className="sr-only">Delete {subject.name}</span>
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex flex-wrap items-center gap-2">
+                      {subject.description ? (
+                        <p className="mt-3 max-w-[62ch] text-[13px] leading-6 text-[#606060] dark:text-[#a8a8a8]">
+                          {subject.description}
+                        </p>
+                      ) : null}
+                      <div className="mt-4 flex flex-wrap items-center gap-2">
                         <Link
                           href={`/admin/dashboard/subjects/${subject.slug}/topics`}
                           className="inline-flex h-9 items-center rounded-[9px] border border-black/[0.1] px-3 text-[12px] font-medium text-[#555] transition-colors hover:border-black/25 hover:text-[#151515] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border-white/[0.11] dark:text-[#b3b3b3] dark:hover:border-white/25 dark:hover:text-white dark:focus-visible:ring-white/50"
@@ -412,33 +437,6 @@ export default function AdminDashboardPage() {
                         >
                           Manage quizzes
                         </Link>
-                        <button
-                          type="button"
-                          onClick={() => editSubject(subject)}
-                          title={`Edit ${subject.name}`}
-                          className="grid size-9 place-items-center rounded-[9px] border border-black/[0.1] text-[#606060] transition-colors hover:border-black/25 hover:text-[#151515] active:scale-[0.96] dark:border-white/[0.11] dark:text-[#a8a8a8] dark:hover:border-white/25 dark:hover:text-white"
-                        >
-                          <SquarePen
-                            className="size-4"
-                            strokeWidth={1.7}
-                            aria-hidden="true"
-                          />
-                          <span className="sr-only">Edit {subject.name}</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => void deleteSubject(subject)}
-                          disabled={deletingId === subject.id}
-                          title={`Delete ${subject.name}`}
-                          className="grid size-9 place-items-center rounded-[9px] border border-black/[0.1] text-[#606060] transition-colors hover:border-red-700/30 hover:text-red-700 active:scale-[0.96] disabled:opacity-45 dark:border-white/[0.11] dark:text-[#a8a8a8] dark:hover:border-red-300/30 dark:hover:text-red-300"
-                        >
-                          <Trash2
-                            className="size-4"
-                            strokeWidth={1.7}
-                            aria-hidden="true"
-                          />
-                          <span className="sr-only">Delete {subject.name}</span>
-                        </button>
                       </div>
                     </article>
                   ))}

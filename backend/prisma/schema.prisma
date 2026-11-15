@@ -24,6 +24,7 @@ model Subject {
   name        String   @db.VarChar(120)
   slug        String   @unique @db.VarChar(120)
   description String?  @db.Text
+  course      Json?
   topics      Topic[]
   questions   Question[]
   roadmaps    Roadmap[]
@@ -91,6 +92,7 @@ model Quiz {
   title     String         @db.VarChar(160)
   slug      String         @db.VarChar(160)
   summary   String?        @db.Text
+  definition Json?
   position  Int            @default(0)
   questions QuizQuestion[]
   createdAt DateTime       @default(now()) @map("created_at")
@@ -115,4 +117,54 @@ model QuizQuestion {
 
   @@index([quizId, position])
   @@map("quiz_questions")
+}
+
+model DsaSheet {
+  id       String @id @db.VarChar(120)
+  details  Json
+  position Int    @default(0)
+
+  @@map("dsa_sheets")
+}
+
+model InterviewCollection {
+  slug      String @id @db.VarChar(120)
+  questions Json
+
+  @@map("interview_collections")
+}
+
+model PublicRoadmap {
+  id       String @id @db.VarChar(120)
+  details  Json
+  position Int    @default(0)
+
+  @@map("public_roadmaps")
+}
+
+model WebdevContent {
+  id      String @id @db.VarChar(40)
+  details Json
+
+  @@map("webdev_content")
+}
+
+model Submission {
+  id        String   @id @default(cuid())
+  kind      String   @db.VarChar(20)
+  name      String?  @db.VarChar(120)
+  email     String?  @db.VarChar(254)
+  category  String   @db.VarChar(80)
+  message   String   @db.Text
+  pageUrl   String?  @map("page_url") @db.VarChar(1000)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("submissions")
+}
+
+model SiteCatalog {
+  id      String @id @db.VarChar(40)
+  details Json
+
+  @@map("site_catalogs")
 }

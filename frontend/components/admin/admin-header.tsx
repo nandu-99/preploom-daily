@@ -5,12 +5,13 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 
-export function AdminHeader({ onLogout }: { onLogout?: () => void }) {
+export function AdminHeader({ onLogout, onNavigate }: { onLogout?: () => void; onNavigate?: () => boolean }) {
   return (
     <header className="border-b border-black/[0.08] bg-[#f7f7f5]/92 backdrop-blur-xl dark:border-white/[0.09] dark:bg-[#0a0a0a]/92">
       <div className="mx-auto flex h-[68px] max-w-[1440px] items-center gap-4 px-5 sm:px-6 lg:px-8">
         <Link
           href="/"
+          onClick={(event) => { if (onNavigate && !onNavigate()) event.preventDefault(); }}
           aria-label="PrepLoom home"
           className="rounded-[10px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/50"
         >
@@ -23,6 +24,8 @@ export function AdminHeader({ onLogout }: { onLogout?: () => void }) {
         <span className="text-[13px] font-medium text-[#606060] dark:text-[#a8a8a8]">
           Admin
         </span>
+
+        <Link href="/admin/dashboard/content" onClick={(event) => { if (onNavigate && !onNavigate()) event.preventDefault(); }} className="ml-3 rounded-[8px] px-3 py-2 text-[13px] text-[#555] hover:bg-black/[0.04] dark:text-[#b3b3b3] dark:hover:bg-white/[0.06]">Public content</Link>
 
         <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />

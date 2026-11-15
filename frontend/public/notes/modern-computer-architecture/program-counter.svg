@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Program counter control</title>
+  <desc id="desc">A priority selector chooses reset zero, a load target, an incremented current PC, or the held current PC. The PC register stores the selected value at the clock edge and outputs the current instruction address.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#D8D6D1"/>
+    </marker>
+    <style>
+      text{font-family:Inter,Arial,sans-serif;fill:#F2F0EB}
+      .h{font-size:42px;font-weight:700}
+      .l{font-size:25px;font-weight:600}
+      .s{font-size:19px;fill:#A8AAAB}
+      .box{fill:none;stroke:#D8D6D1;stroke-width:4}
+      .line{fill:none;stroke:#D8D6D1;stroke-width:4;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect width="1536" height="1024" fill="#25282B"/>
+  <text x="90" y="92" class="h">PROGRAM COUNTER: CHOOSE, THEN STORE</text>
+
+  <text x="75" y="282" class="l">Control signals</text>
+  <text x="75" y="315" class="s">reset, load, increment</text>
+  <path d="M75 345H330" class="line"/>
+
+  <text x="75" y="565" class="l">Load target</text>
+  <text x="75" y="598" class="s">branch, jump, call, return</text>
+  <path d="M75 628H330" class="line"/>
+
+  <rect x="330" y="210" width="390" height="500" rx="20" class="box"/>
+  <text x="525" y="278" text-anchor="middle" class="l">PRIORITY SELECTOR</text>
+  <text x="375" y="355" class="l">1. Reset</text>
+  <text x="680" y="355" text-anchor="end" class="l">0</text>
+  <text x="375" y="420" class="l">2. Load</text>
+  <text x="680" y="420" text-anchor="end" class="l">target</text>
+  <text x="375" y="485" class="l">3. Increment</text>
+  <text x="680" y="485" text-anchor="end" class="l">PC + step</text>
+  <text x="375" y="550" class="l">4. Otherwise</text>
+  <text x="680" y="550" text-anchor="end" class="l">hold</text>
+
+  <text x="805" y="390" class="s">selected next PC</text>
+  <path d="M720 435H890" class="line"/>
+
+  <rect x="890" y="310" width="320" height="250" rx="20" class="box"/>
+  <text x="1050" y="417" text-anchor="middle" class="h">PC REGISTER</text>
+  <text x="1050" y="466" text-anchor="middle" class="s">stores at the clock edge</text>
+
+  <text x="1050" y="180" text-anchor="middle" class="l">Clock</text>
+  <path d="M1050 205V310" class="line"/>
+
+  <text x="1355" y="390" text-anchor="middle" class="l">Current PC</text>
+  <text x="1355" y="420" text-anchor="middle" class="s">instruction address</text>
+  <path d="M1210 435H1460" class="line"/>
+
+  <path d="M1325 435V790H525V710" class="line"/>
+  <text x="925" y="840" text-anchor="middle" class="s">feedback supplies the hold value and the input for PC + instruction step</text>
+</svg>

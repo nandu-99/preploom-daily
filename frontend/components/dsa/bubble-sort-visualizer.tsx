@@ -39,7 +39,7 @@ const supported = () =>
 const serverSupported = () => false;
 const button =
   "inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-black/15 px-3 text-sm font-medium hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-35 dark:border-white/15 dark:hover:bg-white/10";
-const primary = `${button.replace("hover:bg-black/5", "").replace("dark:hover:bg-white/10", "")} bg-neutral-900 text-white enabled:hover:bg-neutral-700 dark:bg-neutral-100 dark:text-black dark:enabled:hover:bg-neutral-300 transition-colors`;
+const primary = `${button.replace("hover:bg-black/5", "").replace("dark:hover:bg-white/10", "")} bg-neutral-900 text-white enabled:hover:bg-neutral-700 dark:bg-[#242424] dark:text-[#f3f3f1] dark:enabled:hover:bg-[#2b2b2b] transition-colors`;
 const phases = {
   ready: "Start",
   pass: "Start pass",

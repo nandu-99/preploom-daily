@@ -10,7 +10,7 @@ export default function VisualizationLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-[#f7f7f5] text-[#151515] dark:bg-[#0a0a0a] dark:text-[#f3f3f1]">
+    <div className="min-h-screen bg-[#f7f7f5] font-[family-name:var(--font-geist-sans)] text-[#151515] dark:bg-[#0a0a0a] dark:text-[#f3f3f1]">
       <SiteHeader />
       <div className="mx-auto grid w-full max-w-[1800px] lg:grid-cols-[220px_minmax(0,1fr)]">
         <aside
@@ -18,10 +18,10 @@ export default function VisualizationLayout({
           className="border-b border-black/10 px-5 py-5 dark:border-white/10 lg:sticky lg:top-[68px] lg:h-[calc(100dvh-68px)] lg:border-b-0 lg:border-r lg:px-3"
         >
           <Link
-            href="/subjects"
+            href="/dsa"
             className="block px-3 text-xs text-neutral-600 hover:underline dark:text-neutral-400"
           >
-            Back to subjects
+            Back to DSA sheets
           </Link>
           <h2 className="mt-7 px-3 text-sm font-semibold">Visualizations</h2>
           <VisualizationNav />
