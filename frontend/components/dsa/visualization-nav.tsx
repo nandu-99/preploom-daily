@@ -8,6 +8,7 @@ const groups = [
     title: "Searching",
     lessons: [
       { title: "Binary search", href: "/dsa/visualizations/binary-search" },
+      { title: "Linear search", href: "/dsa/visualizations/linear-search" },
     ],
   },
   {
@@ -17,6 +18,7 @@ const groups = [
       { title: "Selection sort", href: "/dsa/visualizations/selection-sort" },
       { title: "Insertion sort", href: "/dsa/visualizations/insertion-sort" },
       { title: "Merge sort", href: "/dsa/visualizations/merge-sort" },
+      { title: "Quick sort", href: "/dsa/visualizations/quick-sort" },
     ],
   },
 ];

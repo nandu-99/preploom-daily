@@ -62,7 +62,8 @@ records and preserves edits made through the admin portal.
 The public pages use the original PrepLoom routes, including `/subjects`,
 `/interview-questions`, `/roadmaps`, `/quizzes/:quizSlug`, `/webdev`, and `/dsa`.
 The `/dsa` page opens the sheet explorer. Algorithm visualizations are under
-`/dsa/visualizations`.
+`/dsa/visualizations`, including binary and linear search plus bubble,
+selection, insertion, merge, and quick sort.
 
 Use `/admin/dashboard/content` to edit the restored public pages with labeled
 fields. Open a section, add or reorder its items, review the changes, and save.
