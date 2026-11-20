@@ -1,110 +1,93 @@
 # PrepLoom Daily
 
-PrepLoom Daily is a full-stack technical interview preparation platform. The repository contains a Next.js frontend and a separate Node.js and Express backend.
+PrepLoom Daily is a full-stack technical interview preparation project with a Next.js frontend, a Node.js and Express backend, Prisma, and PostgreSQL. It presents the PrepLoom learning pages while serving their editable content from the backend.
+
+**Original PrepLoom website:** [preploom.vercel.app](https://preploom.vercel.app/)
+
+## What is included
+
+- Subject notes with Learn, Revise, and Recall modes
+- Interview questions, roadmaps, quizzes, and WebDev resources
+- DSA sheets and seven algorithm visualizations: binary search, linear search, bubble sort, selection sort, insertion sort, merge sort, and quick sort
+- An admin portal for editing public content
+- Contact and feedback forms that save submissions in PostgreSQL
+
+The frontend contains the page layouts, animations, and image assets. PostgreSQL holds the editable learning content, admin account, and form submissions. Initial content lives in `backend/prisma/*.json` and is loaded with the seed command.
 
 ## Requirements
 
-- Node.js 22
+- Node.js 22 or newer
 - npm 10 or newer
 - PostgreSQL
 
-## Workspace structure
+## Run locally
 
-```text
-frontend/    Next.js learner interface and admin portal
-backend/     Express API and business logic
-```
-
-## Setup
-
-Install all workspace dependencies from the repository root:
+From the repository root, install dependencies and create the environment files:
 
 ```bash
 npm install
-```
-
-Create local environment files:
-
-```bash
 cp frontend/.env.example frontend/.env.local
 cp backend/.env.example backend/.env
 ```
 
-Update `DATABASE_URL` in `backend/.env`, then generate the Prisma client:
+Set `DATABASE_URL`, `JWT_SECRET`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` in `backend/.env`. Use a PostgreSQL database that is running and accessible at the URL you set. Set `NEXT_PUBLIC_BACKEND_URL` in `frontend/.env.local` if the backend is not running at `http://localhost:4000`.
 
-```bash
-npm run prisma:generate --workspace backend
-```
-
-Apply the existing migrations separately with:
-
-```bash
-npm run prisma:deploy --workspace @preploom/backend
-```
-
-`GET /health` returns `200` when PostgreSQL is reachable and `503` when it is unavailable.
-
-Create or update the admin account and load the published PrepLoom content
-using the credentials in `backend/.env`.
-This command also applies pending migrations before inserting content:
+Apply the Prisma migrations and load the initial content and admin account:
 
 ```bash
 npm run prisma:seed --workspace backend
 ```
 
-The seed adds seven complete subject courses with 228 structured lessons,
-the original subject catalog, nine interview question collections, six DSA
-sheets, three public roadmaps, WebDev resources, and the original quiz.
-The lesson reader displays the original Learn, Revise, and Recall modes,
-including tables, formulas, and images. Re-running the seed adds missing
-records and preserves edits made through the admin portal.
+This command applies pending migrations before seeding. Running it again adds missing seed records while preserving content edits made in the admin portal. If you only need to apply migrations, run `npm run prisma:deploy --workspace backend`.
 
-The public pages use the original PrepLoom routes, including `/subjects`,
-`/interview-questions`, `/roadmaps`, `/quizzes/:quizSlug`, `/webdev`, and `/dsa`.
-The `/dsa` page opens the sheet explorer. Algorithm visualizations are under
-`/dsa/visualizations`, including binary and linear search plus bubble,
-selection, insertion, merge, and quick sort.
-
-Use `/admin/dashboard/content` to edit the restored public pages with labeled
-fields. Open a section, add or reorder its items, review the changes, and save.
-The editor checks required fields and quiz answers before saving. The older
-topic, question, roadmap, and quiz admin forms manage separate records; use
-Public content for changes to the restored pages. Contact and feedback
-submissions are stored by the backend and can be read at `GET /messages` with
-an admin token.
-
-Topics can be read at `/subjects/:subjectSlug/topics` and
-`/subjects/:subjectSlug/topics/:topicSlug`. Admins can create topics with
-`POST /subjects/:subjectSlug/topics` and edit or delete them by topic ID.
-
-Interview questions can be read at `/subjects/:subjectSlug/questions` and
-`/subjects/:subjectSlug/questions/:questionSlug`. Admins can create questions
-with `POST /subjects/:subjectSlug/questions` and edit or delete them by question
-ID. Each question has a prompt, answer, slug, and display position.
-
-Roadmaps can be read at `/subjects/:subjectSlug/roadmaps` and
-`/subjects/:subjectSlug/roadmaps/:roadmapSlug`. Admins can create roadmaps with
-`POST /subjects/:subjectSlug/roadmaps` and edit or delete them by roadmap ID.
-Each roadmap has a title, slug, optional summary, display position, and an
-ordered `steps` array. Each step has a `title` and `description`. The order of
-the array is the order shown to learners.
-
-Start both applications:
+Start the frontend and backend together:
 
 ```bash
 npm run dev
 ```
 
-The frontend runs at `http://localhost:3000` and the backend runs at `http://localhost:4000`.
+| Application | Local address                 |
+| ----------- | ----------------------------- |
+| Frontend    | `http://localhost:3000`       |
+| Backend     | `http://localhost:4000`       |
+| Admin login | `http://localhost:3000/admin` |
 
-They can also be started separately:
+You can start them separately with `npm run dev:frontend` and `npm run dev:backend`.
 
-```bash
-npm run dev:frontend
-npm run dev:backend
+## Content and admin portal
+
+The seed loads seven subject courses with 228 structured lessons, the subject catalog, nine interview question collections, six DSA sheets, three public roadmaps, WebDev resources, and a quiz. Images, logos, and other static assets are served from `frontend/public`.
+
+Sign in at `/admin` with the `ADMIN_EMAIL` and `ADMIN_PASSWORD` values in `backend/.env`. The password is stored as a hash in PostgreSQL. After signing in, open **Public content** in the admin header or visit `/admin/dashboard/content`.
+
+The Public content editor uses labeled fields instead of raw JSON. You can edit sections, add or reorder items, review changes, and save. It updates the content used by the public pages. The older topic, question, roadmap, and quiz admin forms manage separate records, so use **Public content** when changing the restored PrepLoom pages.
+
+The seed files provide initial content. Subsequent admin edits live in PostgreSQL. Quiz progress, note reader progress, and the theme preference stay in the visitor's browser.
+
+## Main routes
+
+| Frontend                           | Backend                                  |
+| ---------------------------------- | ---------------------------------------- |
+| `/subjects` and `/subjects/[slug]` | `/subjects`, `/catalog/subjects`         |
+| `/interview-questions`             | `/interview-questions`                   |
+| `/roadmaps`                        | `/roadmaps`                              |
+| `/quizzes/[quizSlug]`              | `/quizzes/:slug`, `/quizzes/:slug/grade` |
+| `/webdev`                          | `/webdev`                                |
+| `/dsa`                             | `/dsa/sheets`                            |
+| `/dsa/visualizations`              | Visualizations run in the frontend       |
+| `/contact` and `/feedback`         | `/messages`                              |
+
+The backend uses direct paths with no `/api/v1` prefix. `GET /health` returns `200` when PostgreSQL is reachable and `503` when it is unavailable. Reading submitted messages and editing content require an admin token.
+
+## Project structure
+
+```text
+frontend/         Next.js pages, visualizations, admin portal, and static assets
+backend/src/      Express routes and application logic
+backend/prisma/   Prisma schema, migrations, seed, and initial content
 ```
 
-## Quality checks
+## Checks
 
 ```bash
 npm run format:check
