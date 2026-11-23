@@ -1,0 +1,94 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: preploom
+          POSTGRES_PASSWORD: preploom_test
+          POSTGRES_DB: preploom_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U preploom -d preploom_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://preploom:preploom_test@127.0.0.1:5432/preploom_test
+      DIRECT_URL: postgresql://preploom:preploom_test@127.0.0.1:5432/preploom_test
+      TEST_DATABASE_URL: postgresql://preploom:preploom_test@127.0.0.1:5432/preploom_test
+      FRONTEND_URL: http://localhost:3000
+      NEXT_PUBLIC_BACKEND_URL: http://localhost:4000
+      JWT_SECRET: test-secret-with-at-least-thirty-two-characters
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check infrastructure formatting
+        run: npx prettier --check compose.yaml .github/workflows/ci.yml README.md
+
+      - name: Validate Prisma schema
+        run: npm exec --workspace backend -- prisma validate --config prisma7.config.ts
+
+      - name: Apply test database migrations
+        run: npm run prisma:deploy --workspace backend
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Validate Docker Compose configuration
+        run: docker compose --env-file compose.env.example config --quiet
+
+  container-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Start the complete stack
+        run: docker compose --env-file compose.env.example up --build -d
+
+      - name: Check API and frontend
+        run: |
+          curl --fail --retry 10 --retry-delay 3 --retry-connrefused http://127.0.0.1:4000/health
+          curl --fail --retry 10 --retry-delay 3 --retry-connrefused http://127.0.0.1:3000/
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker compose --env-file compose.env.example logs --no-color
+
+      - name: Stop containers
+        if: always()
+        run: docker compose --env-file compose.env.example down

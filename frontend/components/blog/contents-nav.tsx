@@ -6,6 +6,7 @@ const sections = [
   { number: "01", label: "The problem", id: "problem" },
   { number: "02", label: "Architecture", id: "architecture" },
   { number: "02a", label: "Deployment", id: "deployment" },
+  { number: "02b", label: "Local setup", id: "local-stack" },
   { number: "03", label: "Content and data", id: "content" },
   { number: "04", label: "Practice tools", id: "practice" },
   { number: "04a", label: "Quiz grading", id: "quiz-grading" },
@@ -21,7 +22,7 @@ export function ContentsNav({ compact = false }: { compact?: boolean }) {
     (section) => section.id === "quiz-grading" || section.id === "dsa-playback",
   );
   const architectureChildren = sections.filter(
-    (section) => section.id === "deployment",
+    (section) => section.id === "deployment" || section.id === "local-stack",
   );
 
   useEffect(() => {
@@ -113,6 +114,7 @@ export function ContentsNav({ compact = false }: { compact?: boolean }) {
           (section) =>
             compact ||
             (section.id !== "deployment" &&
+              section.id !== "local-stack" &&
               section.id !== "quiz-grading" &&
               section.id !== "dsa-playback"),
         )

@@ -17,9 +17,8 @@ The frontend contains the page layouts, animations, and image assets. PostgreSQL
 
 ## Requirements
 
-- Node.js 22 or newer
-- npm 10 or newer
-- PostgreSQL
+- For a local run: Node.js 22 or newer, npm 10 or newer, and PostgreSQL
+- For the container setup: Docker with Docker Compose
 
 ## Run locally
 
@@ -55,11 +54,22 @@ npm run dev
 
 You can start them separately with `npm run dev:frontend` and `npm run dev:backend`.
 
+## Run with Docker
+
+Docker Compose runs the Next.js frontend, Express backend, and a local PostgreSQL database. It applies migrations and seeds the database before starting the API. This setup uses local credentials from the repository root `.env`; it does not use the Supabase URLs in `backend/.env`.
+
+```bash
+cp compose.env.example .env
+docker compose up --build
+```
+
+Open `http://localhost:3000` for the app, `http://localhost:3000/admin` for admin sign-in, and `http://localhost:4000/health` for the API health check. Use `ADMIN_EMAIL` and `ADMIN_PASSWORD` from the root `.env` to sign in. Run `docker compose down` to stop the stack. The database is stored in a named Docker volume, so this command does not delete its content. If the seed service runs again, it preserves edited content but updates the admin password to the root `.env` value.
+
 ## Content and admin portal
 
 The seed loads seven subject courses with 228 structured lessons, the subject catalog, nine interview question collections, six DSA sheets, three public roadmaps, WebDev resources, and a quiz. Images, logos, and other static assets are served from `frontend/public`.
 
-Sign in at `/admin` with the `ADMIN_EMAIL` and `ADMIN_PASSWORD` values in `backend/.env`. The password is stored as a hash in PostgreSQL. After signing in, open **Public content** in the admin header or visit `/admin/dashboard/content`.
+Sign in at `/admin` with the `ADMIN_EMAIL` and `ADMIN_PASSWORD` values in `backend/.env` for a local run, or the root `.env` for Docker. The password is stored as a hash in PostgreSQL. After signing in, open **Public content** in the admin header or visit `/admin/dashboard/content`.
 
 The Public content editor uses labeled fields instead of raw JSON. You can edit sections, add or reorder items, review changes, and save. It updates the content used by the public pages. The older topic, question, roadmap, and quiz admin forms manage separate records, so use **Public content** when changing the restored PrepLoom pages.
 
@@ -91,9 +101,10 @@ backend/prisma/   Prisma schema, migrations, seed, and initial content
 ## Checks
 
 ```bash
-npm run format:check
 npm run lint
 npm run typecheck
 npm test
 npm run build
 ```
+
+GitHub Actions runs these checks with a temporary PostgreSQL service. It applies the Prisma migrations first so database-backed tests run instead of being skipped. A separate container check builds the complete Docker stack and checks the API and frontend.

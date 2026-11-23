@@ -3,6 +3,7 @@ import {
   ArchitectureDiagram,
   DataModelDiagram,
   DsaPlaybackDiagram,
+  LocalDockerDiagram,
   ProductionDeploymentDiagram,
   QuizSequenceDiagram,
 } from "@/components/blog/technical-diagrams";
@@ -303,6 +304,55 @@ export default function BlogPage() {
                   Check backend health
                   <ExternalLink aria-hidden="true" className="size-3.5" />
                 </a>
+              </div>
+            </div>
+          </section>
+
+          <section
+            id="local-stack"
+            className={`${sectionClass} scroll-mt-[68px]`}
+          >
+            <div className="mx-auto max-w-[1060px]">
+              <SectionLabel number="02b">Local setup</SectionLabel>
+              <h2 className={`${headingClass} max-w-[750px]`}>
+                Compose starts the complete stack.
+              </h2>
+              <p className={`${bodyClass} mt-5 max-w-[760px]`}>
+                Docker Compose builds the Next.js and Express images and starts
+                PostgreSQL locally. The database health check runs before a
+                short-lived seed container applies Prisma migrations and loads
+                the starting content. The API starts after seeding, and the
+                frontend starts after the API health check passes.
+              </p>
+              <div className="mt-8">
+                <LocalDockerDiagram />
+              </div>
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                <div className={cardClass}>
+                  <h3 className="text-[15px] font-semibold">
+                    Local configuration
+                  </h3>
+                  <p className="mt-3 text-[13px] leading-7 text-[#606060] dark:text-[#a8a8a8]">
+                    Copy the included compose.env.example file to the root .env
+                    file and set JWT_SECRET and the admin credentials. Compose
+                    uses these values for its local database and API.
+                  </p>
+                </div>
+                <div className={cardClass}>
+                  <h3 className="text-[15px] font-semibold">Repeatable data</h3>
+                  <p className="mt-3 text-[13px] leading-7 text-[#606060] dark:text-[#a8a8a8]">
+                    The seed loads the supplied learning content. PostgreSQL
+                    keeps data in a named volume, so stopping containers does
+                    not erase admin edits or submissions.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 overflow-x-auto rounded-[10px] border border-black/[0.1] bg-[#ededeb] p-4 font-[family-name:var(--font-geist-mono)] text-[12px] leading-6 dark:border-white/[0.11] dark:bg-[#121212]">
+                <code>
+                  cp compose.env.example .env
+                  <br />
+                  docker compose up --build
+                </code>
               </div>
             </div>
           </section>
@@ -686,7 +736,11 @@ line: 7`}</pre>
                   ],
                   [
                     "Checks",
-                    "Prisma migrations define the schema. The /health route checks PostgreSQL and returns 200 when it responds or 503 when it does not. Frontend tests check linear search steps, quick sort behavior, and custom input limits. Backend tests check content rules; database and HTTP checks need a database and a local listener.",
+                    "Prisma migrations define the schema. The /health route checks PostgreSQL and returns 200 when it responds or 503 when it does not. Frontend tests check algorithm steps and input limits. Backend tests check content rules and API behavior.",
+                  ],
+                  [
+                    "Continuous integration",
+                    "On each push and pull request, GitHub Actions starts a temporary PostgreSQL service, applies migrations, then runs lint, type checks, tests, and production builds. A separate job builds the Docker stack and requests the frontend and /health routes. This checks both the code and the container startup path.",
                   ],
                 ].map(([title, description]) => (
                   <div
@@ -706,9 +760,10 @@ line: 7`}</pre>
                   <p className="mt-2 text-[13px] leading-7 text-[#606060] dark:text-[#a8a8a8]">
                     Run the frontend tests to check algorithm steps and input
                     handling. With PostgreSQL configured, run the backend tests
-                    for content rules and API behavior, then open a subject,
-                    submit a practice quiz, and step through binary search in
-                    the app. The database checks require TEST_DATABASE_URL.
+                    for content rules and API behavior. GitHub Actions supplies
+                    TEST_DATABASE_URL so database tests run. To check the full
+                    flow manually, open a subject, submit a practice quiz, and
+                    step through binary search in the app.
                   </p>
                 </div>
               </div>
