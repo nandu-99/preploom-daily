@@ -740,7 +740,7 @@ line: 7`}</pre>
                   ],
                   [
                     "Continuous integration",
-                    "On each push and pull request, GitHub Actions starts a temporary PostgreSQL service, applies migrations, then runs lint, type checks, tests, and production builds. A separate job builds the Docker stack and requests the frontend and /health routes. This checks both the code and the container startup path.",
+                    "On each push and pull request, GitHub Actions starts a temporary PostgreSQL service, applies migrations, then runs lint, type checks, tests, and production builds. It also validates the Docker Compose configuration.",
                   ],
                 ].map(([title, description]) => (
                   <div

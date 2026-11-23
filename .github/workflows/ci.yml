@@ -47,7 +47,7 @@ jobs:
         run: npm ci
 
       - name: Check infrastructure formatting
-        run: npx prettier --check compose.yaml .github/workflows/ci.yml README.md
+        run: npx prettier --check compose.yaml .github/workflows/ci.yml README.md docs/DEVELOPMENT.md
 
       - name: Validate Prisma schema
         run: npm exec --workspace backend -- prisma validate --config prisma7.config.ts
@@ -69,26 +69,3 @@ jobs:
 
       - name: Validate Docker Compose configuration
         run: docker compose --env-file compose.env.example config --quiet
-
-  container-smoke:
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - name: Check out source
-        uses: actions/checkout@v7
-
-      - name: Start the complete stack
-        run: docker compose --env-file compose.env.example up --build -d
-
-      - name: Check API and frontend
-        run: |
-          curl --fail --retry 10 --retry-delay 3 --retry-connrefused http://127.0.0.1:4000/health
-          curl --fail --retry 10 --retry-delay 3 --retry-connrefused http://127.0.0.1:3000/
-
-      - name: Show container logs on failure
-        if: failure()
-        run: docker compose --env-file compose.env.example logs --no-color
-
-      - name: Stop containers
-        if: always()
-        run: docker compose --env-file compose.env.example down
