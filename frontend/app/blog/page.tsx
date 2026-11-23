@@ -3,6 +3,7 @@ import {
   ArchitectureDiagram,
   DataModelDiagram,
   DsaPlaybackDiagram,
+  ProductionDeploymentDiagram,
   QuizSequenceDiagram,
 } from "@/components/blog/technical-diagrams";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -89,7 +90,7 @@ export default function BlogPage() {
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <a
-                  href="https://preploom.vercel.app/"
+                  href="https://preploom-daily.vercel.app/"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex h-10 items-center gap-2 rounded-[9px] bg-[#151515] px-4 text-[12px] font-medium text-white hover:bg-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border dark:border-white/[0.14] dark:bg-[#242424] dark:text-[#f3f3f1] dark:hover:bg-[#2b2b2b] dark:focus-visible:ring-white/50"
@@ -239,6 +240,69 @@ export default function BlogPage() {
                     token and content shape before Prisma saves the change.
                   </p>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          <section
+            id="deployment"
+            className={`${sectionClass} scroll-mt-[68px]`}
+          >
+            <div className="mx-auto max-w-[1060px]">
+              <SectionLabel number="02a">Deployment</SectionLabel>
+              <h2 className={`${headingClass} max-w-[750px]`}>
+                The same flow runs across three services.
+              </h2>
+              <p className={`${bodyClass} mt-5 max-w-[760px]`}>
+                Vercel serves the Next.js frontend. Browser actions and
+                server-rendered pages call the Express API on Render. Express
+                uses Prisma to read and update the Supabase PostgreSQL database.
+                The frontend has the public API address; the database URLs and
+                admin signing secret stay on the backend.
+              </p>
+              <div className="mt-8">
+                <ProductionDeploymentDiagram />
+              </div>
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                <div className={cardClass}>
+                  <h3 className="text-[15px] font-semibold">
+                    Two database connections
+                  </h3>
+                  <p className="mt-3 text-[13px] leading-7 text-[#606060] dark:text-[#a8a8a8]">
+                    The running API uses Supabase&apos;s transaction pooler.
+                    Prisma migrations use its session pooler, so schema changes
+                    do not go through the transaction pooler.
+                  </p>
+                </div>
+                <div className={cardClass}>
+                  <h3 className="text-[15px] font-semibold">Health checks</h3>
+                  <p className="mt-3 text-[13px] leading-7 text-[#606060] dark:text-[#a8a8a8]">
+                    Render can check /health before serving a new deployment.
+                    The route asks PostgreSQL for a simple result and returns
+                    503 if that check fails. An UptimeRobot monitor can request
+                    the same route to report availability.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-3 text-[12px]">
+                <a
+                  href="https://preploom-daily.vercel.app/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-[9px] border border-black/[0.12] px-4 py-2.5 hover:bg-black/[0.04] dark:border-white/[0.14] dark:hover:bg-white/[0.06]"
+                >
+                  Open live frontend
+                  <ExternalLink aria-hidden="true" className="size-3.5" />
+                </a>
+                <a
+                  href="https://preploom-daily.onrender.com/health"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-[9px] border border-black/[0.12] px-4 py-2.5 hover:bg-black/[0.04] dark:border-white/[0.14] dark:hover:bg-white/[0.06]"
+                >
+                  Check backend health
+                  <ExternalLink aria-hidden="true" className="size-3.5" />
+                </a>
               </div>
             </div>
           </section>

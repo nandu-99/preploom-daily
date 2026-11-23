@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 const sections = [
   { number: "01", label: "The problem", id: "problem" },
   { number: "02", label: "Architecture", id: "architecture" },
+  { number: "02a", label: "Deployment", id: "deployment" },
   { number: "03", label: "Content and data", id: "content" },
   { number: "04", label: "Practice tools", id: "practice" },
   { number: "04a", label: "Quiz grading", id: "quiz-grading" },
@@ -18,6 +19,9 @@ export function ContentsNav({ compact = false }: { compact?: boolean }) {
   const [activeId, setActiveId] = useState<string>(sections[0].id);
   const practiceChildren = sections.filter(
     (section) => section.id === "quiz-grading" || section.id === "dsa-playback",
+  );
+  const architectureChildren = sections.filter(
+    (section) => section.id === "deployment",
   );
 
   useEffect(() => {
@@ -108,14 +112,20 @@ export function ContentsNav({ compact = false }: { compact?: boolean }) {
         .filter(
           (section) =>
             compact ||
-            (section.id !== "quiz-grading" && section.id !== "dsa-playback"),
+            (section.id !== "deployment" &&
+              section.id !== "quiz-grading" &&
+              section.id !== "dsa-playback"),
         )
         .map((section) =>
-          section.id === "practice" && !compact ? (
+          (section.id === "practice" || section.id === "architecture") &&
+          !compact ? (
             <div key={section.id}>
               {renderLink(section)}
               <div className="mt-1 grid gap-1">
-                {practiceChildren.map((child) => renderLink(child, true))}
+                {(section.id === "architecture"
+                  ? architectureChildren
+                  : practiceChildren
+                ).map((child) => renderLink(child, true))}
               </div>
             </div>
           ) : (

@@ -91,6 +91,65 @@ export function ArchitectureDiagram() {
   );
 }
 
+export function ProductionDeploymentDiagram() {
+  const services = [
+    ["Frontend", "Vercel", "Next.js pages and browser interface"],
+    ["API", "Render", "Express routes and Prisma client"],
+    ["Data", "Supabase", "PostgreSQL content and admin records"],
+  ];
+
+  return (
+    <figure className={frameClass}>
+      <div className="border-b border-black/[0.1] px-5 py-3 dark:border-white/[0.11]">
+        <h3 className="text-[13px] font-medium">Production deployment</h3>
+        <p className="mt-1 text-[11px] text-[#606060] dark:text-[#a8a8a8]">
+          The live path from a page request to stored content
+        </p>
+      </div>
+      <div className="p-4 sm:p-6">
+        <div className="grid items-center gap-3 md:grid-cols-[minmax(0,1fr)_20px_minmax(0,1fr)_20px_minmax(0,1fr)]">
+          {services.map(([role, name, detail], index) => (
+            <div key={name} className="contents">
+              {index > 0 && (
+                <ArrowRight
+                  aria-hidden="true"
+                  className="mx-auto size-4 rotate-90 text-[#888] dark:text-[#777] md:rotate-0"
+                  strokeWidth={1.5}
+                />
+              )}
+              <div className="h-full rounded-[10px] border border-black/[0.1] bg-[#f7f7f5] p-4 dark:border-white/[0.13] dark:bg-[#0a0a0a]">
+                <span className="font-[family-name:var(--font-geist-mono)] text-[10px] uppercase tracking-[0.08em] text-[#777] dark:text-[#999]">
+                  {role}
+                </span>
+                <strong className="mt-2 block text-[15px] font-semibold">
+                  {name}
+                </strong>
+                <p className="mt-2 text-[11px] leading-5 text-[#606060] dark:text-[#a8a8a8]">
+                  {detail}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 rounded-[10px] border border-black/[0.1] bg-[#f7f7f5] p-4 text-[12px] leading-6 text-[#555] dark:border-white/[0.13] dark:bg-[#0a0a0a] dark:text-[#b3b3b3]">
+          <strong className="font-medium text-[#151515] dark:text-[#f3f3f1]">
+            Health monitoring
+          </strong>
+          <p className="mt-1">
+            UptimeRobot can request Render&apos;s /health route. That route
+            queries PostgreSQL and returns 503 if the database is unavailable.
+          </p>
+        </div>
+      </div>
+      <figcaption className={captionClass}>
+        The browser and server-rendered pages call the Render API. Runtime
+        queries use Supabase&apos;s transaction pooler; migrations use its
+        session pooler.
+      </figcaption>
+    </figure>
+  );
+}
+
 type ModelBoxProps = {
   x: number;
   y: number;

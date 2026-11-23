@@ -1,8 +1,9 @@
 # PrepLoom Daily
 
-PrepLoom Daily is a full-stack technical interview preparation project with a Next.js frontend, a Node.js and Express backend, Prisma, and PostgreSQL. It presents the PrepLoom learning pages while serving their editable content from the backend.
+PrepLoom Daily is a full-stack technical interview preparation project with a Next.js frontend, a Node.js and Express backend, Prisma, and PostgreSQL. Its learning content is editable through the admin portal and served by the backend.
 
-**Original PrepLoom website:** [preploom.vercel.app](https://preploom.vercel.app/)
+**Live app:** [preploom-daily.vercel.app](https://preploom-daily.vercel.app/)  
+**Technical blog:** [Architecture and implementation](https://preploom-daily.vercel.app/blog)
 
 ## What is included
 
@@ -30,7 +31,7 @@ cp frontend/.env.example frontend/.env.local
 cp backend/.env.example backend/.env
 ```
 
-Set `DATABASE_URL`, `JWT_SECRET`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` in `backend/.env`. Use a PostgreSQL database that is running and accessible at the URL you set. Set `NEXT_PUBLIC_BACKEND_URL` in `frontend/.env.local` if the backend is not running at `http://localhost:4000`.
+Set `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` in `backend/.env`. Replace `[YOUR-PASSWORD]` in both database URLs with the URL-encoded Supabase database password. `DATABASE_URL` uses the transaction pooler for the running backend. `DIRECT_URL` uses the session pooler for Prisma migrations. Keep `backend/.env` private. Set `NEXT_PUBLIC_BACKEND_URL` in `frontend/.env.local` if the backend is not running at `http://localhost:4000`.
 
 Apply the Prisma migrations and load the initial content and admin account:
 
@@ -38,7 +39,7 @@ Apply the Prisma migrations and load the initial content and admin account:
 npm run prisma:seed --workspace backend
 ```
 
-This command applies pending migrations before seeding. Running it again adds missing seed records while preserving content edits made in the admin portal. If you only need to apply migrations, run `npm run prisma:deploy --workspace backend`.
+This command applies pending migrations through `DIRECT_URL`, then loads the included learning content and creates the admin account. Running it again adds missing seed records while preserving content edits made in the admin portal, but it resets the admin password to `ADMIN_PASSWORD` from `backend/.env`. If you only need to apply migrations, run `npm run prisma:deploy --workspace backend`.
 
 Start the frontend and backend together:
 
