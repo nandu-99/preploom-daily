@@ -62,6 +62,7 @@ const groups = [
     title: "Product",
     links: [
       ["About", "/about"],
+      ["Blog", "/blog"],
       ["Feedback", "/feedback"],
       ["Contact", "/contact"],
     ],
